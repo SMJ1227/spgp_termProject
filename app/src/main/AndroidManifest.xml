@@ -13,9 +13,14 @@
         android:theme="@style/Theme.Game"
         tools:targetApi="31">
         <activity
+            android:name=".app.RunningActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
             android:name=".app.MainActivity"
             android:screenOrientation="landscape"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
