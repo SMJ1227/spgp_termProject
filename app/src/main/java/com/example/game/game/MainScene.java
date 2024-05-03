@@ -13,13 +13,14 @@ public class MainScene extends Scene {
     Score score; // package private
 
     public enum Layer {
-        bg, enemy, bullet, player, ui, controller, COUNT
+        bg, platform, item, enemy, bullet, player, ui, controller, COUNT
     }
     public MainScene() {
         initLayers(Layer.COUNT);
 
         add(Layer.controller, new EnemyGenerator());
         add(Layer.controller, new CollisionChecker(this));
+        add(Layer.controller, new MapLoader(this));
 
         add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.5f));
         add(Layer.bg, new HorzScrollBackground(R.mipmap.bg, 2.0f));

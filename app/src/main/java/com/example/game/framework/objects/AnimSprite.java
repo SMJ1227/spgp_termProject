@@ -7,17 +7,20 @@ import com.example.game.framework.res.BitmapPool;
 
 public class AnimSprite extends Sprite {
     protected Rect srcRect = new Rect();
-    private float fps;
-    private int frameWidth, frameHeight;
-    private int frameCount;
-    private final long createdOn;
+    protected float fps;
+    protected int frameWidth, frameHeight;
+    protected int frameCount;
+    protected final long createdOn;
 
-    public AnimSprite(int mipmapId, float fps) {
+    public AnimSprite(int mipmapId, float fps, int count) {
         super(0);
         if (mipmapId != 0) {
-            setAnimationResource(mipmapId, fps, 0);
+            setAnimationResource(mipmapId, fps, count);
         }
         createdOn = System.currentTimeMillis();
+    }
+    public AnimSprite(int mipmapId, float fps) {
+        this(mipmapId, fps, 0);
     }
     public void setAnimationResource(int mipmapId, float fps) {
         setAnimationResource(mipmapId, fps, 0);
