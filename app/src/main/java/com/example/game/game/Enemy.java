@@ -26,15 +26,15 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
     private Enemy(int level, int index) {
         super(resIds[level], ANIM_FPS);
         this.level = level;
-        setPosition(Metrics.width / 10 * (2 * index + 1), -RADIUS, RADIUS);
-        dy = SPEED;
+        setPosition(Metrics.width, Metrics.height / 4 * (index+1) - 1.0f, RADIUS);
+        dx = -SPEED;
     }
     public static Enemy get(int level, int index) {
         Enemy enemy = (Enemy) RecycleBin.get(Enemy.class);
         if (enemy != null) {
             enemy.setAnimationResource(resIds[level], ANIM_FPS);
             enemy.level = level;
-            enemy.setPosition(Metrics.width / 10 * (2 * index + 1), -RADIUS, RADIUS);
+            enemy.setPosition(Metrics.width / 5 * (3 * index + 1), -RADIUS, RADIUS);
             return enemy;
         }
         return new Enemy(level, index);
