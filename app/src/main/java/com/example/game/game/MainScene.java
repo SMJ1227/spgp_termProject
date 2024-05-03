@@ -4,7 +4,7 @@ import android.view.MotionEvent;
 
 import com.example.game.R;
 import com.example.game.framework.objects.Score;
-import com.example.game.framework.objects.VertScrollBackground;
+import com.example.game.framework.objects.HorzScrollBackground;
 import com.example.game.framework.scene.Scene;
 
 public class MainScene extends Scene {
@@ -21,8 +21,8 @@ public class MainScene extends Scene {
         add(Layer.controller, new EnemyGenerator());
         add(Layer.controller, new CollisionChecker(this));
 
-        add(Layer.bg, new VertScrollBackground(R.mipmap.bg_city, 0.2f));
-        add(Layer.bg, new VertScrollBackground(R.mipmap.clouds, 0.4f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.bg_city, 0.2f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.4f));
 
         this.fighter = new Fighter();
         add(Layer.player, fighter);

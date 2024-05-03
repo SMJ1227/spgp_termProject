@@ -2,6 +2,7 @@ package com.example.game.framework.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
@@ -11,6 +12,7 @@ import com.example.game.framework.res.BitmapPool;
 public class Sprite implements IGameObject {
     private static final String TAG = Sprite.class.getSimpleName();
     protected Bitmap bitmap;
+    protected Rect srcRect;
     protected final RectF dstRect = new RectF();
     protected float x, y, dx, dy;
     protected float width, height, radius;
@@ -47,6 +49,6 @@ public class Sprite implements IGameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(bitmap, null, dstRect, null);
+        canvas.drawBitmap(bitmap, srcRect, dstRect, null);
     }
 }

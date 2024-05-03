@@ -14,12 +14,14 @@ import com.example.game.framework.activity.GameActivity;
 import com.example.game.framework.interfaces.IBoxCollidable;
 import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.interfaces.IRecyclable;
+import com.example.game.framework.view.Metrics;
 
 public class Scene {
 
     private static final String TAG = Scene.class.getSimpleName();
     private static ArrayList<Scene> stack = new ArrayList<>();
 
+    public static boolean drawsDebugInfo = false;
     public static Scene top() {
         int top = stack.size() - 1;
         if (top < 0) {
@@ -123,6 +125,9 @@ public class Scene {
 
     protected static Paint bboxPaint;
     public void draw(Canvas canvas) {
+        if (this.clipsRect()) {
+            canvas.clipRect(0, 0, Metrics.width, Metrics.height);
+        }
         for (ArrayList<IGameObject> objects: layers) {
             for (IGameObject gobj : objects) {
                 gobj.draw(canvas);
@@ -165,6 +170,10 @@ public class Scene {
 
     public boolean onBackPressed() {
         return false;
+    }
+
+    public boolean clipsRect() {
+        return true;
     }
 
     //////////////////////////////////////////////////

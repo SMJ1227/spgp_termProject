@@ -60,4 +60,8 @@ public class Score implements IGameObject {
     public void add(int amount) {
         score += amount;
     }
+
+    public int getScore() {
+        return score;
+    }
 }
