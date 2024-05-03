@@ -10,14 +10,14 @@ import com.example.game.framework.scene.RecycleBin;
 import com.example.game.framework.scene.Scene;
 
 public class Bullet extends Sprite implements IBoxCollidable, IRecyclable {
-    private static final float BULLET_WIDTH = 0.68f;
-    private static final float BULLET_HEIGHT = BULLET_WIDTH * 40 / 28;
+    private static final float BULLET_WIDTH = 0.4f;
+    private static final float BULLET_HEIGHT = BULLET_WIDTH / 3;
     private static final float SPEED = 20.0f;
 
     private Bullet(float x, float y) {
         super(R.mipmap.laser_1);
         setPosition(x, y, BULLET_WIDTH, BULLET_HEIGHT);
-        dy = -SPEED;
+        dx = SPEED;
     }
     public static Bullet get(float x, float y) {
         Bullet bullet = (Bullet) RecycleBin.get(Bullet.class);
