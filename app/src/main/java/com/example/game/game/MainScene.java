@@ -21,8 +21,8 @@ public class MainScene extends Scene {
         add(Layer.controller, new EnemyGenerator());
         add(Layer.controller, new CollisionChecker(this));
 
-        add(Layer.bg, new HorzScrollBackground(R.mipmap.bg_city, 0.2f));
-        add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.4f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.5f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.bg, 2.0f));
 
         this.fighter = new Fighter();
         add(Layer.player, fighter);
