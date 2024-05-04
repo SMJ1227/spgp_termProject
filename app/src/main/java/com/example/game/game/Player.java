@@ -27,13 +27,13 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private final RectF collisionRect = new RectF();
     protected State state = State.running;
     protected static Rect[][] srcRectsArray = {
-            makeRects(100, 101, 102, 103), // State.running
+            makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.running
             makeRects(7, 8),               // State.jump
             makeRects(1, 2, 3, 4),         // State.doubleJump
             makeRects(0),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
-            { 0.1f, 0.0f, 0.1f, 0.0f }, // State.running
+            { 0.0f, 0.0f, 0.0f, 0.0f }, // State.running
             { 0.1f, 0.2f, 0.1f, 0.0f }, // State.jump
             { 0.2f, 0.2f, 0.2f, 0.0f }, // State.doubleJump
             { 0.2f, 0.0f, 0.2f, 0.0f }, // State.falling
@@ -42,15 +42,15 @@ public class Player extends SheetSprite implements IBoxCollidable {
         Rect[] rects = new Rect[indices.length];
         for (int i = 0; i < indices.length; i++) {
             int idx = indices[i];
-            int l = 72 + (idx % 100) * 272;
-            int t = 132 + (idx / 100) * 272;
-            rects[i] = new Rect(l, t, l + 140, t + 140);
+            int l = (idx % 100) * 35;
+            int t = (idx / 100) * 56;
+            rects[i] = new Rect(l, t, l + 31, t + 56);
         }
         return rects;
     }
     public Player() {
-        super(R.mipmap.cookie_player_sheet, 8);
-        setPosition(2.0f, 3.0f, 2.0f, 2.0f);
+        super(R.mipmap.kurby, 8);
+        setPosition(1.0f, 5.0f, 1.0f, 2.0f);
         srcRects = srcRectsArray[state.ordinal()];
         fixCollisionRect();
     }
