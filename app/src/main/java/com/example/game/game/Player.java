@@ -33,7 +33,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(0),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
-            { 0.0f, 0.0f, 0.0f, 0.0f }, // State.running
+            { 0.0f, 0.5f, 0.0f, 0.0f }, // State.running
             { 0.1f, 0.2f, 0.1f, 0.0f }, // State.jump
             { 0.2f, 0.2f, 0.2f, 0.0f }, // State.doubleJump
             { 0.2f, 0.0f, 0.2f, 0.0f }, // State.falling
@@ -42,9 +42,9 @@ public class Player extends SheetSprite implements IBoxCollidable {
         Rect[] rects = new Rect[indices.length];
         for (int i = 0; i < indices.length; i++) {
             int idx = indices[i];
-            int l = (idx % 100) * 35;
-            int t = (idx / 100) * 56;
-            rects[i] = new Rect(l, t, l + 31, t + 56);
+            int l = 32 + (idx % 100) * 100;
+            int t = 50 + (idx / 100) * 100;
+            rects[i] = new Rect(l, t, l + 36, t + 50);
         }
         return rects;
     }
