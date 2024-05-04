@@ -15,7 +15,7 @@ public class HorzScrollBackground extends Sprite {
     }
     @Override
     public void update(float elapsedSeconds) {
-        this.x += speed * elapsedSeconds; // x 값을 스크롤된 양으로 사용한다
+        this.x -= speed * elapsedSeconds; // x 값을 스크롤된 양으로 사용한다
     }
 
     @Override

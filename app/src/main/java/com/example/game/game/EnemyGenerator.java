@@ -28,7 +28,7 @@ public class EnemyGenerator implements IGameObject {
         if (scene == null) return;
 
         wave++;
-        Log.v(TAG, "Generating: wave " + wave);
+        //Log.v(TAG, "Generating: wave " + wave);
         for (int i = 0; i < 3; i++) {
             int level = (wave + 15) / 10 - random.nextInt(3);
             if (level < 0) level = 0;

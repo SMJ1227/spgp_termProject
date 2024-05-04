@@ -17,7 +17,6 @@ import com.example.game.framework.interfaces.IRecyclable;
 import com.example.game.framework.view.Metrics;
 
 public class Scene {
-
     private static final String TAG = Scene.class.getSimpleName();
     private static ArrayList<Scene> stack = new ArrayList<>();
 

@@ -11,7 +11,9 @@ public class MainScene extends Scene {
     private static final String TAG = MainScene.class.getSimpleName();
     private final Fighter fighter;
     Score score; // package private
-
+    public int getScore() {
+        return score.getScore();
+    }
     public enum Layer {
         bg, platform, item, enemy, bullet, player, ui, controller, COUNT
     }
@@ -23,7 +25,7 @@ public class MainScene extends Scene {
         add(Layer.controller, new MapLoader(this));
 
         add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.5f));
-        add(Layer.bg, new HorzScrollBackground(R.mipmap.bg, 2.0f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.bg, 1.5f));
 
         this.fighter = new Fighter();
         add(Layer.player, fighter);

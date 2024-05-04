@@ -13,19 +13,21 @@ public class Bullet extends Sprite implements IBoxCollidable, IRecyclable {
     private static final float BULLET_WIDTH = 0.4f;
     private static final float BULLET_HEIGHT = BULLET_WIDTH / 3;
     private static final float SPEED = 20.0f;
-
-    private Bullet(float x, float y) {
+    private int power;
+    private Bullet(float x, float y, int power) {
         super(R.mipmap.laser_1);
         setPosition(x, y, BULLET_WIDTH, BULLET_HEIGHT);
+        this.power = power;
         dx = SPEED;
     }
-    public static Bullet get(float x, float y) {
+    public static Bullet get(float x, float y, int power) {
         Bullet bullet = (Bullet) RecycleBin.get(Bullet.class);
         if (bullet != null) {
             bullet.setPosition(x, y, BULLET_WIDTH, BULLET_HEIGHT);
+            bullet.power = power;
             return bullet;
         }
-        return new Bullet(x, y);
+        return new Bullet(x, y, power);
     }
 
     @Override
@@ -42,7 +44,8 @@ public class Bullet extends Sprite implements IBoxCollidable, IRecyclable {
     }
 
     @Override
-    public void onRecycle() {
-
+    public void onRecycle() {    }
+    public int getPower() {
+        return power;
     }
 }

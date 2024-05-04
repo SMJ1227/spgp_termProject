@@ -1,6 +1,7 @@
 package com.example.game.game;
 
 import android.graphics.RectF;
+import android.graphics.Canvas;
 
 import com.example.game.R;
 import com.example.game.framework.interfaces.IBoxCollidable;
@@ -9,6 +10,7 @@ import com.example.game.framework.objects.AnimSprite;
 import com.example.game.framework.scene.RecycleBin;
 import com.example.game.framework.scene.Scene;
 import com.example.game.framework.view.Metrics;
+import com.example.game.framework.util.Gauge;
 
 public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
     private static final float SPEED = 3.0f;
@@ -22,19 +24,27 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
     public static final float ANIM_FPS = 10.0f;
     protected RectF collisionRect = new RectF();
     private int level;
+    private int life, maxLife;
+    protected Gauge gauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
 
     private Enemy(int level, int index) {
-        super(resIds[level], ANIM_FPS);
-        this.level = level;
-        setPosition(Metrics.width, Metrics.height / 4 * (index+1) - 1.0f, RADIUS);
+        super(0, 0);
+        init(level, index);
         dx = -SPEED;
+        /*super(resIds[level], ANIM_FPS);
+        this.level = level;
+        setPosition(Metrics.width, Metrics.height / 4 * (index+1) - 1.0f, RADIUS);*/
+    }
+    private void init(int level, int index) {
+        this.level = level;
+        this.life = this.maxLife = (level + 1) * 10;
+        setAnimationResource(resIds[level], ANIM_FPS);
+        setPosition(Metrics.width, Metrics.height / 4 * (index+1) - 1.0f, RADIUS);
     }
     public static Enemy get(int level, int index) {
         Enemy enemy = (Enemy) RecycleBin.get(Enemy.class);
         if (enemy != null) {
-            enemy.setAnimationResource(resIds[level], ANIM_FPS);
-            enemy.level = level;
-            enemy.setPosition(Metrics.width / 5 * (3 * index + 1), -RADIUS, RADIUS);
+            enemy.init(level, index);
             return enemy;
         }
         return new Enemy(level, index);
@@ -47,6 +57,14 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
         }
         collisionRect.set(dstRect);
         collisionRect.inset(0.11f, 0.11f);
+    }
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        canvas.save();
+        canvas.translate(dstRect.left, dstRect.bottom);
+        canvas.scale(dstRect.width(), dstRect.height());
+        gauge.draw(canvas, (float)life / maxLife);
+        canvas.restore();
     }
     @Override
     public RectF getCollisionRect() {
@@ -61,4 +79,9 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
     public int getScore() {
         return (level + 1) * 100;
     }
+    public boolean decreaseLife(int power) {
+        life -= power;
+        return life <= 0;
+    }
 }
+
