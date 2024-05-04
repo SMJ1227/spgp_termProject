@@ -9,7 +9,7 @@ import com.example.game.framework.scene.Scene;
 
 public class MainScene extends Scene {
     private static final String TAG = MainScene.class.getSimpleName();
-    private final Fighter fighter;
+    private final Player player;
     Score score; // package private
     public int getScore() {
         return score.getScore();
@@ -27,8 +27,8 @@ public class MainScene extends Scene {
         add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.5f));
         add(Layer.bg, new HorzScrollBackground(R.mipmap.bg, 1.5f));
 
-        this.fighter = new Fighter();
-        add(Layer.player, fighter);
+        this.player = new Player();
+        add(Layer.player, player);
 
         this.score = new Score(R.mipmap.number_24x32, 8.5f, 0.5f, 0.6f);
         score.setScore(0);
@@ -46,6 +46,6 @@ public class MainScene extends Scene {
 
     @Override
     public boolean onTouch(MotionEvent event) {
-        return fighter.onTouch(event);
+        return player.onTouch(event);
     }
 }
