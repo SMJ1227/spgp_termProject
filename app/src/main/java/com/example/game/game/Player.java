@@ -22,21 +22,21 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
-    private static final float GRAVITY = 17.0f;
+    private static final float GRAVITY = 20.0f;
     private float fireCoolTime = FIRE_INTERVAL;
     private final RectF collisionRect = new RectF();
     protected State state = State.running;
     protected static Rect[][] srcRectsArray = {
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.running
-            makeRects(7, 8),               // State.jump
+            makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
             makeRects(1, 2, 3, 4),         // State.doubleJump
             makeRects(0),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
             { 0.0f, 0.5f, 0.0f, 0.0f }, // State.running
-            { 0.1f, 0.2f, 0.1f, 0.0f }, // State.jump
+            { 0.0f, 0.5f, 0.0f, 0.0f }, // State.jump
             { 0.2f, 0.2f, 0.2f, 0.0f }, // State.doubleJump
-            { 0.2f, 0.0f, 0.2f, 0.0f }, // State.falling
+            { 0.0f, 0.0f, 0.0f, 0.0f }, // State.falling
     };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
