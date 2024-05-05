@@ -34,11 +34,11 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(400, 401),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
-            { 0.0f, 0.5f, 0.0f, 0.0f }, // State.running
-            { 0.0f, 0.5f, 0.0f, 0.0f }, // State.jump
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // State.running
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // State.jump
             { 0.2f, 0.2f, 0.2f, 0.0f }, // State.doubleJump
-            { 0.0f, 0.0f, 0.0f, 0.0f }, // State.falling
-            { 0.0f, 0.5f, 0.0f, 0.0f }, // attack
+            { 0.2f, 0.2f, 0.2f, 0.0f }, // State.falling
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // attack
     };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
@@ -52,7 +52,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     public Player() {
         super(R.mipmap.kurby, 8);
-        setPosition(1.0f, 5.0f, 1.0f, 2.0f);
+        setPosition(1.0f, 2.0f, 1.0f, 2.0f);
         srcRects = srcRectsArray[state.ordinal()];
         fixCollisionRect();
     }

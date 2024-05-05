@@ -19,7 +19,7 @@ public class MapLoader implements IGameObject {
     public void update(float elapsedSeconds) {
         platformX += MapObject.SPEED * elapsedSeconds;
         while (platformX < Metrics.width) {
-            Platform platform = Platform.get(Platform.Type.RANDOM, platformX, 7); //Metrics.height - 2);
+            Platform platform = Platform.get(Platform.Type.RANDOM, platformX, 7, 0); //Metrics.height - 2);
             platform.addToScene();
             platformX += platform.getWidth();
         }
@@ -28,23 +28,14 @@ public class MapLoader implements IGameObject {
             int y = 2;;// = (random.nextInt(3) + 1) * 2;
             int count = 3;
             int y2;
-            /*if (y < 3) {
-
-            } else {
-                count = random.nextInt(5) + 1;
-            }*/
             for(int i = 0; i < count; i++){
-                Platform platform = Platform.get(Platform.Type.T_3x1, itemX, y);
+                Platform platform = Platform.get(Platform.Type.T_3x1, itemX, y, i);
                 platform.addToScene();
-                y2 = y - 1;//random.nextInt(3);
+                y2 = y - 1;
                 JellyItem jellyItem = JellyItem.get(JellyItem.RANDOM, itemX, y2);
                 jellyItem.addToScene();
                 itemX += jellyItem.getWidth();
                 y = y + 2;
-            }
-
-            for (int i = 0; i < count; i++) {
-
             }
         }
     }
