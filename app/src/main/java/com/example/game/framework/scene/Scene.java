@@ -14,6 +14,7 @@ import com.example.game.framework.activity.GameActivity;
 import com.example.game.framework.interfaces.IBoxCollidable;
 import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.interfaces.IRecyclable;
+import com.example.game.framework.interfaces.ITouchable;
 import com.example.game.framework.view.Metrics;
 
 public class Scene {
@@ -149,7 +150,21 @@ public class Scene {
         }
     }
 
+    protected int getTouchLayerIndex() {
+        return -1;
+    }
+
     public boolean onTouch(MotionEvent event) {
+        int touchLayer = getTouchLayerIndex();
+        if (touchLayer < 0) return false;
+        ArrayList<IGameObject> gameObjects = layers.get(touchLayer);
+        for (IGameObject gobj : gameObjects) {
+            if (!(gobj instanceof ITouchable)) {
+                continue;
+            }
+            boolean processed = ((ITouchable) gobj).onTouchEvent(event);
+            if (processed) return true;
+        }
         return false;
     }
 

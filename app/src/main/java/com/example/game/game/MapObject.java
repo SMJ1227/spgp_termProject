@@ -26,7 +26,7 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
         float dx = SPEED * elapsedSeconds;
         dstRect.offset(dx, 0);
         if (dstRect.right < 0) {
-            Log.d(TAG, "Removing:" + this);
+            //Log.d(TAG, "Removing:" + this);
             removeFromScene();
         }
     }

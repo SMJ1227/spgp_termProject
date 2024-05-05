@@ -17,6 +17,7 @@ public class Platform extends MapObject {
         static final int[] widths = { 10, 3 };
         static final int[] heights = { 2, 1 };
     }
+    private boolean passes;
     private Platform() {}
 
     @Override
@@ -41,5 +42,9 @@ public class Platform extends MapObject {
         width = type.width();
         height = type.height();
         dstRect.set(left, top, left + width, top + height);
+        passes = type == Type.T_3x1;
+    }
+    public boolean canPass() {
+        return passes;
     }
 }
