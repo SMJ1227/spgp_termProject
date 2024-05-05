@@ -34,11 +34,11 @@ public class MainScene extends Scene {
         this.player = new Player();
         add(Layer.player, player);
 
-        add(Layer.touch, new Button(R.mipmap.btn_slide_n, 1.5f, 8.0f, 2.0f, 0.75f, new Button.Callback() {
+        add(Layer.touch, new Button(R.mipmap.btn_attack_n, 1.5f, 8.0f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {
                 //Log.d(TAG, "Button: Slide " + action);
-                player.slide(action == Button.Action.pressed);
+                player.attack(action == Button.Action.pressed);
                 return true;
             }
         }));

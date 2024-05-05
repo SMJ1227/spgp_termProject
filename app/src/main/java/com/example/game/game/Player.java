@@ -18,7 +18,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float FIRE_INTERVAL = 1.25f;
     private static final float BULLET_OFFSET = 0f;
     public enum State {
-        running, jump, doubleJump, falling, slide, COUNT
+        running, jump, doubleJump, attack, falling,  COUNT
     }
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
@@ -30,15 +30,15 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.running
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
             makeRects(1, 2, 3, 4),         // State.doubleJump
-            makeRects(0),                  // State.falling
-            makeRects(9, 10),              // State.slide
+            makeRects(300, 301, 302, 303),              // State.attack
+            makeRects(400, 401),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
             { 0.0f, 0.5f, 0.0f, 0.0f }, // State.running
             { 0.0f, 0.5f, 0.0f, 0.0f }, // State.jump
             { 0.2f, 0.2f, 0.2f, 0.0f }, // State.doubleJump
             { 0.0f, 0.0f, 0.0f, 0.0f }, // State.falling
-            { 0.00f, 0.50f, 0.00f, 0.00f }, // slide
+            { 0.00f, 0.50f, 0.00f, 0.00f }, // attack
     };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
@@ -76,7 +76,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 dstRect.offset(0, dy);
                 break;
             case running:
-            case slide:
+            case attack:
                 float foot = collisionRect.bottom;
                 float floor = findNearestPlatformTop(foot);
                 if (foot < floor) {
@@ -153,12 +153,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
         collisionRect.offset(0, 0.001f);
         jumpSpeed = 0;
     }
-    public void slide(boolean startsSlide) {
+    public void attack(boolean startsSlide) {
         if (state == State.running && startsSlide) {
-            setState(State.slide);
+            setState(State.attack);
             return;
         }
-        if (state == State.slide && !startsSlide) {
+        if (state == State.attack && !startsSlide) {
             setState(State.running);
             //return;
         }

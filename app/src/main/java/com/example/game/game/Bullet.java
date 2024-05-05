@@ -8,6 +8,7 @@ import com.example.game.framework.interfaces.IRecyclable;
 import com.example.game.framework.objects.Sprite;
 import com.example.game.framework.scene.RecycleBin;
 import com.example.game.framework.scene.Scene;
+import com.example.game.framework.view.Metrics;
 
 public class Bullet extends Sprite implements IBoxCollidable, IRecyclable {
     private static final float BULLET_WIDTH = 1f;
@@ -33,7 +34,7 @@ public class Bullet extends Sprite implements IBoxCollidable, IRecyclable {
     @Override
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);
-        if (dstRect.bottom < 0) {
+        if (dstRect.left > Metrics.width) {
             Scene.top().remove(MainScene.Layer.bullet, this);
         }
     }
