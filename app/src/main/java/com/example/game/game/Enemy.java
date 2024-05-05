@@ -2,17 +2,20 @@ package com.example.game.game;
 
 import android.graphics.RectF;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.example.game.R;
 import com.example.game.framework.interfaces.IBoxCollidable;
 import com.example.game.framework.interfaces.IRecyclable;
 import com.example.game.framework.objects.AnimSprite;
+import com.example.game.framework.objects.Sprite;
 import com.example.game.framework.scene.RecycleBin;
 import com.example.game.framework.scene.Scene;
 import com.example.game.framework.view.Metrics;
 import com.example.game.framework.util.Gauge;
 
 public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
+    private static final String TAG = Sprite.class.getSimpleName();
     private static final float SPEED = 3.0f;
     private static final float RADIUS = 0.9f;
     private static final int[] resIds = {
@@ -52,8 +55,9 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
     @Override
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);
-        if (dstRect.top > Metrics.height) {
+        if (dstRect.right < 0) {
             Scene.top().remove(MainScene.Layer.enemy, this);
+            // Log.v(TAG, "deleted " + this.getClass().getSimpleName() + "@" + System.identityHashCode(this));
         }
         collisionRect.set(dstRect);
         collisionRect.inset(0.11f, 0.11f);
