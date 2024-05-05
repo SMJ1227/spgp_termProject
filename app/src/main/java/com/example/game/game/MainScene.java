@@ -38,7 +38,7 @@ public class MainScene extends Scene {
             @Override
             public boolean onTouch(Button.Action action) {
                 //Log.d(TAG, "Button: Slide " + action);
-                player.attack(action == Button.Action.pressed);
+                player.throwing(action == Button.Action.pressed);
                 return true;
             }
         }));

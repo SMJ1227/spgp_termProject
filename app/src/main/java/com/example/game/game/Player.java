@@ -18,7 +18,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float FIRE_INTERVAL = 1.25f;
     private static final float BULLET_OFFSET = 0f;
     public enum State {
-        running, jump, doubleJump, attack, falling,  COUNT
+        running, jump, doubleJump, throwing, falling,  COUNT
     }
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
@@ -30,7 +30,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.running
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
             makeRects(1, 2, 3, 4),         // State.doubleJump
-            makeRects(300, 301, 302, 303),              // State.attack
+            makeRects(300, 301, 300),              // State.throwing
             makeRects(400, 401),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
@@ -38,7 +38,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             { 0.0f, 0.5f, 0.0f, 0.0f }, // State.jump
             { 0.2f, 0.2f, 0.2f, 0.0f }, // State.doubleJump
             { 0.0f, 0.0f, 0.0f, 0.0f }, // State.falling
-            { 0.00f, 0.50f, 0.00f, 0.00f }, // attack
+            { 0.0f, 0.5f, 0.0f, 0.0f }, // attack
     };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
@@ -58,6 +58,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     @Override
     public void update(float elapsedSeconds) {
+        fireCoolTime -= elapsedSeconds;
         switch (state) {
             case jump:
             case doubleJump:
@@ -76,7 +77,6 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 dstRect.offset(0, dy);
                 break;
             case running:
-            case attack:
                 float foot = collisionRect.bottom;
                 float floor = findNearestPlatformTop(foot);
                 if (foot < floor) {
@@ -84,9 +84,11 @@ public class Player extends SheetSprite implements IBoxCollidable {
                     jumpSpeed = 0;
                 }
                 break;
+            case throwing:
+                fireBullet(elapsedSeconds);
+                break;
         }
         fixCollisionRect();
-        fireBullet(elapsedSeconds);
     }
     private float findNearestPlatformTop(float foot) {
         Platform platform = findNearestPlatform(foot);
@@ -153,12 +155,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
         collisionRect.offset(0, 0.001f);
         jumpSpeed = 0;
     }
-    public void attack(boolean startsSlide) {
+    public void throwing(boolean startsSlide) {
         if (state == State.running && startsSlide) {
-            setState(State.attack);
+            setState(State.throwing);
             return;
         }
-        if (state == State.attack && !startsSlide) {
+        if (state == State.throwing && !startsSlide) {
             setState(State.running);
             //return;
         }
@@ -172,7 +174,6 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private void fireBullet(float elapsedSeconds) {
         MainScene scene = (MainScene) Scene.top();
         if (scene == null) return;
-        fireCoolTime -= elapsedSeconds;
         if (fireCoolTime > 0) return;
 
         fireCoolTime = FIRE_INTERVAL;

@@ -12,11 +12,11 @@ import com.example.game.framework.view.Metrics;
 
 public class Bullet extends Sprite implements IBoxCollidable, IRecyclable {
     private static final float BULLET_WIDTH = 1f;
-    private static final float BULLET_HEIGHT = BULLET_WIDTH;
+    private static final float BULLET_HEIGHT = BULLET_WIDTH / 2;
     private static final float SPEED = 20.0f;
     private int power;
     private Bullet(float x, float y, int power) {
-        super(R.mipmap.sword_effect);
+        super(R.mipmap.throw_sword);
         setPosition(x, y+0.4f, BULLET_WIDTH, BULLET_HEIGHT);
         this.power = power;
         dx = SPEED;
