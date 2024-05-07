@@ -13,26 +13,27 @@ import com.example.game.framework.objects.Sprite;
 
 public class MainScene extends Scene {
     private static final String TAG = MainScene.class.getSimpleName();
+    public enum Layer {
+        bg, platform, item, enemy, bullet, swordEffect, player, ui, touch, controller, COUNT
+    }
     private final Player player;
     Score score; // package private
     public int getScore() {
         return score.getScore();
     }
-    public enum Layer {
-        bg, platform, item, enemy, bullet, swordEffect, player, ui, touch, controller, COUNT
-    }
+
     public MainScene() {
         initLayers(Layer.COUNT);
-
-        add(Layer.controller, new EnemyGenerator());
-        add(Layer.controller, new CollisionChecker(this));
-        add(Layer.controller, new MapLoader(this));
 
         add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.5f));
         add(Layer.bg, new HorzScrollBackground(R.mipmap.bg, 1.5f));
 
         this.player = new Player();
         add(Layer.player, player);
+
+        add(Layer.controller, new EnemyGenerator());
+        add(Layer.controller, new CollisionChecker(this, player));
+        add(Layer.controller, new MapLoader(this));
 
         add(Layer.touch, new Button(R.mipmap.btn_attack_n, 12.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
             @Override

@@ -1,6 +1,7 @@
 package com.example.game.game;
 
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.example.game.R;
 import com.example.game.framework.res.BitmapPool;
@@ -12,6 +13,8 @@ public class JellyItem extends MapObject {
     private static final int ITEMS_IN_A_ROW = 30;
     private static final int SIZE = 66;
     private static final int BORDER = 2;
+    private static final float INSET = 0.20f;
+    private final RectF collisionRect = new RectF();
     private JellyItem() {
         bitmap = BitmapPool.get(R.mipmap.jelly);
         srcRect = new Rect();
@@ -32,11 +35,24 @@ public class JellyItem extends MapObject {
         setSrcRect(index);
         width = height = 1;
         dstRect.set(left, top, left + width, top + height);
+        fixCollisionRect();
     }
 
     @Override
     protected MainScene.Layer getLayer() {
         return MainScene.Layer.item;
+    }
+    public void update(float elapsedSeconds) {
+        super.update(elapsedSeconds);
+        fixCollisionRect();
+    }
+
+    private void fixCollisionRect() {
+        collisionRect.set(
+                dstRect.left + width * INSET,
+                dstRect.top + height * INSET,
+                dstRect.right - width * INSET,
+                dstRect.bottom - height * INSET);
     }
     private void setSrcRect(int index) {
         int x = index % ITEMS_IN_A_ROW;
@@ -44,5 +60,8 @@ public class JellyItem extends MapObject {
         int left = x * (SIZE + BORDER) + BORDER;
         int top = y * (SIZE + BORDER) + BORDER;
         srcRect.set(left, top, left + SIZE, top + SIZE);
+    }
+    public static int getScore() {
+        return 100;
     }
 }

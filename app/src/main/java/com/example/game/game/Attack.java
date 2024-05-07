@@ -12,18 +12,18 @@ import com.example.game.framework.view.Metrics;
 
 public class Attack extends Sprite implements /*IBoxCollidable,*/ IRecyclable {
     private static final float EFFECT_WIDTH = 1.0f;
-    private static final float EFFECT_HEIGHT = 1.0f;
+    private static final float EFFECT_HEIGHT = 2.0f;
     private float lifeTime = 0.2f;
     private int power;
     private Attack(float x, float y, int power) {
         super(R.mipmap.sword_effect);
-        setPosition(x + 1.0f, y + 0.5f, EFFECT_WIDTH, EFFECT_HEIGHT);
+        setPosition(x + 0.7f, y + 0.5f, EFFECT_WIDTH, EFFECT_HEIGHT);
         this.power = power;
     }
     public static Attack get(float x, float y, int power) {
-        Attack attack = (Attack) RecycleBin.get(Bullet.class);
+        Attack attack = (Attack) RecycleBin.get(Attack.class);
         if (attack != null) {
-            attack.setPosition(x + 1.0f, y + 0.5f, EFFECT_WIDTH, EFFECT_HEIGHT);
+            attack.setPosition(x + 0.7f, y + 0.5f, EFFECT_WIDTH, EFFECT_HEIGHT);
             attack.power = power;
             return attack;
         }
