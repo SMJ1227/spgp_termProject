@@ -18,27 +18,30 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float FIRE_INTERVAL = 1.25f;
     private static final float BULLET_OFFSET = 0f;
     public enum State {
-        running, jump, doubleJump, throwing, falling,  COUNT
+        running, jump, doubleJump, throwing, attack, falling,  COUNT
     }
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
     private static final float GRAVITY = 20.0f;
     private float fireCoolTime = FIRE_INTERVAL;
+    private float  attackTime = 0.40f;
     private final RectF collisionRect = new RectF();
     protected State state = State.running;
     protected static Rect[][] srcRectsArray = {
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.running
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
-            makeRects(1, 2, 3, 4),         // State.doubleJump
+            makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.doublejump
             makeRects(300, 301, 300),              // State.throwing
+            makeRects(300, 301, 302, 303),              // State.attack
             makeRects(400, 401),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.running
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.jump
-            { 0.2f, 0.2f, 0.2f, 0.0f }, // State.doubleJump
-            { 0.2f, 0.2f, 0.2f, 0.0f }, // State.falling
+            { 0.2f, 0.5f, 0.2f, 0.0f }, // State.doubleJump
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // throwing
             { 0.2f, 0.5f, 0.0f, 0.0f }, // attack
+            { 0.2f, 0.0f, 0.2f, 0.0f }, // State.falling
     };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
@@ -86,6 +89,13 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 break;
             case throwing:
                 fireBullet(elapsedSeconds);
+                break;
+            case attack:
+                attackTime -= elapsedSeconds;
+                if(attackTime < 0) {
+                    attackTime = 0.40f;
+                    setState(State.running);
+                }
                 break;
         }
         fixCollisionRect();
@@ -163,6 +173,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
         if (state == State.throwing && !startsSlide) {
             setState(State.running);
             //return;
+        }
+    }
+    public void attack(boolean startsSlide) {
+        if (state == State.running && startsSlide) {
+            setState(State.attack);
+            return;
         }
     }
     public boolean onTouch(MotionEvent event) {
