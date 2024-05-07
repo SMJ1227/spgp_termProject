@@ -19,9 +19,7 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     private static final String TAG = Sprite.class.getSimpleName();
     private static final float SPEED = 3.0f;
     private static final float RADIUS = 0.5f;
-    private static final int[] resIds = { R.mipmap.bee, R.mipmap.bee_die };
     public static final int MAX_LEVEL = 20;
-    public static final float ANIM_FPS = 10.0f;
     protected RectF collisionRect = new RectF();
     private int level;
     private int life, maxLife;
