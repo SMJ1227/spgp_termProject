@@ -67,14 +67,13 @@ public class MainScene extends Scene {
             @Override   // 오
             public boolean onTouch(Button.Action action) {
                 player.running(action);
-                Log.d(TAG, String.valueOf(action));
                 return false;
             }
         }));
         add(Layer.touch, new Button(R.mipmap.btn_proto_n, 1.5f, 8.0f, 1.0f, 1.0f, new Button.Callback() {
             @Override   // 왼
             public boolean onTouch(Button.Action action) {
-                player.fall();
+                player.goBack(action);
                 return false;
             }
         }));

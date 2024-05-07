@@ -21,7 +21,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float SPEED = 3.0f;
     private static float dx;
     public enum State {
-        walking, running, jump, doubleJump, throwing, attack, falling,  COUNT
+        walking, goBack, running, jump, doubleJump, throwing, attack, falling,  COUNT
     }
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
@@ -33,6 +33,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     protected State state = State.walking;
     protected static Rect[][] srcRectsArray = {
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.walking
+            makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.goBack
             makeRects(100, 101, 102, 103, 104, 105, 106, 107), // State.running
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.doublejump
@@ -42,6 +43,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     };
     protected static float[][] edgeInsetRatios = {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.walking
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // State.goBack
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.running
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.jump
             { 0.2f, 0.5f, 0.2f, 0.0f }, // State.doubleJump
@@ -93,6 +95,11 @@ public class Player extends SheetSprite implements IBoxCollidable {
                     setState(State.falling);
                     jumpSpeed = 0;
                 }
+                break;
+            case goBack:
+                dx = -SPEED * elapsedSeconds;
+                x += dx;
+                dstRect.offset(dx, 0);
                 break;
             case running:
                 dx = SPEED * elapsedSeconds;
@@ -192,15 +199,27 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     public void running(Button.Action action) {
         if(action == Button.Action.pressed){
-            if (state == State.walking) {
+            if (state == State.walking || state == State.running) {
                 setState(State.running);
             }
         }
-        if(action == Button.Action.released){
+        else if(action == Button.Action.released){
             setState(State.walking);
+            dx = 0;
         }
     }
-    
+    public void goBack(Button.Action action) {
+        if(action == Button.Action.pressed){
+            if (state == State.walking || state == State.running) {
+                setState(State.goBack);
+            }
+        }
+        else if(action == Button.Action.released){
+            setState(State.walking);
+            dx = 0;
+        }
+    }
+
     public boolean onTouch(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             jump();
