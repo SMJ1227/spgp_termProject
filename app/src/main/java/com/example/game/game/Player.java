@@ -62,7 +62,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         return rects;
     }
     public Player() {
-        super(R.mipmap.kurby, 8);
+        super(R.mipmap.kurby, 10);
         setPosition(1.0f, 2.0f, 1.0f, 2.0f);
         srcRects = srcRectsArray[state.ordinal()];
         fixCollisionRect();
