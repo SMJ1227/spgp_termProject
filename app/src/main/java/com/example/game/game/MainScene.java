@@ -19,7 +19,7 @@ public class MainScene extends Scene {
         return score.getScore();
     }
     public enum Layer {
-        bg, platform, item, enemy, bullet, player, ui, touch, controller, COUNT
+        bg, platform, item, enemy, bullet, swordEffect, player, ui, touch, controller, COUNT
     }
     public MainScene() {
         initLayers(Layer.COUNT);

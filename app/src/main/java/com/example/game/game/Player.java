@@ -16,6 +16,7 @@ import com.example.game.framework.view.Metrics;
 
 public class Player extends SheetSprite implements IBoxCollidable {
     private static final float FIRE_INTERVAL = 1.25f;
+    private static final float ATTACK_INTERVAL = 1.0f;
     private static final float BULLET_OFFSET = 0f;
     public enum State {
         running, jump, doubleJump, throwing, attack, falling,  COUNT
@@ -24,6 +25,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float JUMP_POWER = 9.0f;
     private static final float GRAVITY = 20.0f;
     private float fireCoolTime = FIRE_INTERVAL;
+    private float attackCoolTime = ATTACK_INTERVAL;
     private float  attackTime = 0.40f;
     private final RectF collisionRect = new RectF();
     protected State state = State.running;
@@ -62,6 +64,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     @Override
     public void update(float elapsedSeconds) {
         fireCoolTime -= elapsedSeconds;
+        attackCoolTime -= elapsedSeconds;
         switch (state) {
             case jump:
             case doubleJump:
@@ -92,6 +95,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 break;
             case attack:
                 attackTime -= elapsedSeconds;
+                swordEffect(elapsedSeconds);
                 if(attackTime < 0) {
                     attackTime = 0.40f;
                     setState(State.running);
@@ -186,6 +190,20 @@ public class Player extends SheetSprite implements IBoxCollidable {
             jump();
         }
         return false;
+    }
+    private void swordEffect(float elapsedSeconds) {
+        MainScene scene = (MainScene) Scene.top();
+        if (scene == null) return;
+        if (attackCoolTime > 0) return;
+
+        attackCoolTime = FIRE_INTERVAL;
+        attackTime = 0.40f;
+
+        int score = scene.getScore();
+        int power = 10 + score / 1000;
+        Attack attack = Attack.get(x, y - BULLET_OFFSET, power);
+
+        scene.add(MainScene.Layer.swordEffect, attack);
     }
     private void fireBullet(float elapsedSeconds) {
         MainScene scene = (MainScene) Scene.top();
