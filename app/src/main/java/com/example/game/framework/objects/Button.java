@@ -29,8 +29,10 @@ public class Button extends Sprite implements ITouchable {
         //Log.d(TAG, "Button.onTouch(" + System.identityHashCode(this) + ", " + e.getAction() + ", " + e.getX() + ", " + e.getY());
         int action = e.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
-            processedDown = callback.onTouch(Action.pressed);
-        } else if (action == MotionEvent.ACTION_UP && processedDown) {
+            processedDown = true;
+            callback.onTouch(Action.pressed);
+        }
+        else if (action == MotionEvent.ACTION_UP && processedDown) {
             callback.onTouch(Action.released);
         }
         return true;

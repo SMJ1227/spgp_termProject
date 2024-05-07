@@ -38,7 +38,6 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_attack_n, 12.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {
-                //Log.d(TAG, "Button: Slide " + action);
                 player.attack(action == Button.Action.pressed);
                 return true;
             }
@@ -46,7 +45,6 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_shoot_n, 12.5f, 8.5f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {
-                //Log.d(TAG, "Button: Slide " + action);
                 player.throwing(action == Button.Action.pressed);
                 return true;
             }
@@ -60,6 +58,21 @@ public class MainScene extends Scene {
         }));
         add(Layer.touch, new Button(R.mipmap.btn_fall_n, 14.5f, 8.5f, 2.0f, 0.75f, new Button.Callback() {
             @Override
+            public boolean onTouch(Button.Action action) {
+                player.fall();
+                return false;
+            }
+        }));
+        add(Layer.touch, new Button(R.mipmap.btn_proto_n, 3.0f, 8.0f, 1.0f, 1.0f, new Button.Callback() {
+            @Override   // 오
+            public boolean onTouch(Button.Action action) {
+                player.running(action);
+                Log.d(TAG, String.valueOf(action));
+                return false;
+            }
+        }));
+        add(Layer.touch, new Button(R.mipmap.btn_proto_n, 1.5f, 8.0f, 1.0f, 1.0f, new Button.Callback() {
+            @Override   // 왼
             public boolean onTouch(Button.Action action) {
                 player.fall();
                 return false;

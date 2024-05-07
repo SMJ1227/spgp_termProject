@@ -1,6 +1,5 @@
 package com.example.game.game;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.MotionEvent;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import com.example.game.R;
 import com.example.game.framework.interfaces.IBoxCollidable;
 import com.example.game.framework.interfaces.IGameObject;
+import com.example.game.framework.objects.Button;
 import com.example.game.framework.objects.SheetSprite;
 import com.example.game.framework.scene.Scene;
 import com.example.game.framework.view.Metrics;
@@ -18,8 +18,10 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float FIRE_INTERVAL = 1.25f;
     private static final float ATTACK_INTERVAL = 1.0f;
     private static final float BULLET_OFFSET = 0f;
+    private static final float SPEED = 3.0f;
+    private static float dx;
     public enum State {
-        running, jump, doubleJump, throwing, attack, falling,  COUNT
+        walking, running, jump, doubleJump, throwing, attack, falling,  COUNT
     }
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
@@ -28,9 +30,10 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private float attackCoolTime = ATTACK_INTERVAL;
     private float  attackTime = 0.40f;
     private final RectF collisionRect = new RectF();
-    protected State state = State.running;
+    protected State state = State.walking;
     protected static Rect[][] srcRectsArray = {
-            makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.running
+            makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.walking
+            makeRects(100, 101, 102, 103, 104, 105, 106, 107), // State.running
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.doublejump
             makeRects(300, 301, 300),              // State.throwing
@@ -38,6 +41,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(400, 401),                  // State.falling
     };
     protected static float[][] edgeInsetRatios = {
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // State.walking
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.running
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.jump
             { 0.2f, 0.5f, 0.2f, 0.0f }, // State.doubleJump
@@ -76,19 +80,24 @@ public class Player extends SheetSprite implements IBoxCollidable {
                     float floor = findNearestPlatformTop(foot);
                     if (foot + dy >= floor) {
                         dy = floor - foot;
-                        setState(State.running);
+                        setState(State.walking);
                     }
                 }
                 y += dy;
                 dstRect.offset(0, dy);
                 break;
-            case running:
+            case walking:
                 float foot = collisionRect.bottom;
                 float floor = findNearestPlatformTop(foot);
                 if (foot < floor) {
                     setState(State.falling);
                     jumpSpeed = 0;
                 }
+                break;
+            case running:
+                dx = SPEED * elapsedSeconds;
+                x += dx;
+                dstRect.offset(dx, 0);
                 break;
             case throwing:
                 fireBullet(elapsedSeconds);
@@ -98,7 +107,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 swordEffect(elapsedSeconds);
                 if(attackTime < 0) {
                     attackTime = 0.40f;
-                    setState(State.running);
+                    setState(State.walking);
                 }
                 break;
         }
@@ -122,7 +131,6 @@ public class Player extends SheetSprite implements IBoxCollidable {
             if (rect.left > x || x > rect.right) {
                 continue;
             }
-            //Log.d(TAG, "foot:" + foot + " platform: " + rect);
             if (rect.top < foot) {
                 continue;
             }
@@ -130,7 +138,6 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 top = rect.top;
                 nearest = platform;
             }
-            //Log.d(TAG, "top=" + top + " gotcha:" + platform);
         }
         return nearest;
     }
@@ -148,18 +155,16 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
 
     public void jump() {
-        if (state == State.running) {
+        if (state == State.walking) {
             jumpSpeed = -JUMP_POWER;
             setState(State.jump);
         } else if (state == State.jump) {
             jumpSpeed = -JUMP_POWER;
-            // jumpSpeed -= JUMP_POWER;
-
             setState(State.doubleJump);
         }
     }
     public void fall() {
-        if (state != State.running) return;
+        if (state != State.walking) return;
         float foot = collisionRect.bottom;
         Platform platform = findNearestPlatform(foot);
         if (platform == null) return;
@@ -170,21 +175,32 @@ public class Player extends SheetSprite implements IBoxCollidable {
         jumpSpeed = 0;
     }
     public void throwing(boolean startsSlide) {
-        if (state == State.running && startsSlide) {
+        if (state == State.walking && startsSlide) {
             setState(State.throwing);
             return;
         }
         if (state == State.throwing && !startsSlide) {
-            setState(State.running);
+            setState(State.walking);
             //return;
         }
     }
     public void attack(boolean startsSlide) {
-        if (state == State.running && startsSlide) {
+        if (state == State.walking && startsSlide) {
             setState(State.attack);
-            return;
+            //return;
         }
     }
+    public void running(Button.Action action) {
+        if(action == Button.Action.pressed){
+            if (state == State.walking) {
+                setState(State.running);
+            }
+        }
+        if(action == Button.Action.released){
+            setState(State.walking);
+        }
+    }
+    
     public boolean onTouch(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             jump();
