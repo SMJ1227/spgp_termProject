@@ -92,8 +92,7 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
         if (dstRect.right < 0) {
             Scene.top().remove(MainScene.Layer.enemy, this);
         }
-        collisionRect.set(dstRect);
-        collisionRect.inset(0.11f, 0.11f);
+        fixCollisionRect();
     }
     public void draw(Canvas canvas) {
         super.draw(canvas);
