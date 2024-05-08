@@ -39,7 +39,7 @@ public class EnemyGenerator implements IGameObject {
                     scene.add(MainScene.Layer.enemy, Enemy.get(level, i));
                     break;
                 case 1:
-                    scene.add(MainScene.Layer.enemy, Disturb.get(i));
+                    scene.add(MainScene.Layer.disturb, Disturb.get(i));
                     break;
             }
         }

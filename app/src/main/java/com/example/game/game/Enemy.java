@@ -60,7 +60,7 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
         srcRects = srcRectsArray[state.ordinal()];
     }
     private Enemy(int level, int index) {
-        super(R.mipmap.bees, 4);
+        super(R.mipmap.bees, 20);
         init(level, index);
         dx = -SPEED;
     }
