@@ -24,7 +24,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         walking, goBack, running, jump, doubleJump, throwing, attack, falling,  COUNT
     }
     private float jumpSpeed;
-    private static final float JUMP_POWER = 9.0f;
+    private static final float JUMP_POWER = 7.5f;
     private static final float GRAVITY = 20.0f;
     private float fireCoolTime = FIRE_INTERVAL;
     private float attackCoolTime = ATTACK_INTERVAL;
@@ -62,7 +62,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         return rects;
     }
     public Player() {
-        super(R.mipmap.kurby, 10);
+        super(R.mipmap.kurby, 15);
         setPosition(1.0f, 2.0f, 1.0f, 2.0f);
         srcRects = srcRectsArray[state.ordinal()];
         fixCollisionRect();

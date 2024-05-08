@@ -41,7 +41,7 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
     public void addToScene() {
         Scene scene = Scene.top();
         if (scene == null) {
-            Log.e(TAG, "Scene stack is empty in addToScene() " + this.getClass().getSimpleName());
+            //Log.e(TAG, "Scene stack is empty in addToScene() " + this.getClass().getSimpleName());
             return;
         }
         scene.add(getLayer(), this);
@@ -49,7 +49,7 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
     public void removeFromScene() {
         Scene scene = Scene.top();
         if (scene == null) {
-            Log.e(TAG, "Scene stack is empty in removeFromScene() " + this.getClass().getSimpleName());
+            //Log.e(TAG, "Scene stack is empty in removeFromScene() " + this.getClass().getSimpleName());
             return;
         }
         scene.remove(getLayer(), this);
