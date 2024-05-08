@@ -16,7 +16,8 @@ import com.example.game.framework.view.Metrics;
 
 public class Disturb extends SheetSprite implements IBoxCollidable, IRecyclable {
     private static final String TAG = Sprite.class.getSimpleName();
-    private static final float SPEED = 2.0f;
+    private static float SPEED = 2.0f;
+    private float speedTime = 5.0f;
     private static final float RADIUS = 0.6f;
     protected RectF collisionRect = new RectF();
     public enum State {
@@ -79,6 +80,14 @@ public class Disturb extends SheetSprite implements IBoxCollidable, IRecyclable 
     @Override
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);
+        speedTime -= elapsedSeconds;
+        if (speedTime < 0) {
+            speedTime = 5.0f;
+            if(SPEED < 4.0f){
+                SPEED += 0.1f;
+                Log.v(TAG, "disturb" + String.valueOf(SPEED));
+            }
+        }
         if (dstRect.right < 0) {
             Scene.top().remove(MainScene.Layer.disturb, this);
         }

@@ -10,7 +10,7 @@ import com.example.game.framework.scene.Scene;
 
 public class EnemyGenerator implements IGameObject {
     private static final String TAG = EnemyGenerator.class.getSimpleName();
-    public static final float GEN_INTERVAL = 5.0f;
+    public static float GEN_INTERVAL = 5.0f;
     private final Random random = new Random();
     private float enemyTime = 0;
     private int wave;
@@ -20,6 +20,10 @@ public class EnemyGenerator implements IGameObject {
         if (enemyTime < 0) {
             generate();
             enemyTime = GEN_INTERVAL;
+            if(GEN_INTERVAL > 2.0f && wave%5 == 0){
+                GEN_INTERVAL -= 0.3f;
+                //Log.v(TAG, String.valueOf(GEN_INTERVAL));
+            }
         }
     }
 

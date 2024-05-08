@@ -17,12 +17,13 @@ import com.example.game.framework.util.Gauge;
 
 public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     private static final String TAG = Sprite.class.getSimpleName();
-    private static final float SPEED = 3.0f;
+    public static float SPEED = 3.0f;
     private static final float RADIUS = 0.5f;
     public static final int MAX_LEVEL = 20;
     protected RectF collisionRect = new RectF();
     private int level;
     private int life, maxLife;
+    private float speedTime = 5.0f;
     protected Gauge gauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
 
     public enum State {
@@ -89,6 +90,14 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     @Override
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);
+        speedTime -= elapsedSeconds;
+        if (speedTime < 0) {
+            speedTime = 5.0f;
+            if(SPEED < 8.0f){
+                SPEED += 0.1f;
+                Log.v(TAG, String.valueOf(SPEED));
+            }
+        }
         if (dstRect.right < 0) {
             Scene.top().remove(MainScene.Layer.enemy, this);
         }
