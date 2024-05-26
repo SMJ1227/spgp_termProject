@@ -1,6 +1,7 @@
 package com.example.game.game;
 
 import android.animation.ValueAnimator;
+import android.graphics.RectF;
 import android.view.animation.BounceInterpolator;
 
 import com.example.game.R;
@@ -8,6 +9,7 @@ import com.example.game.R;
 public class FallingObstacle extends Obstacle {
     private static final int RES_ID = R.mipmap.epn01_tm01_sda;
     private ValueAnimator animator;
+    private final RectF collisionRect = new RectF();
 
     @Override
     protected void init(int index, float left, float top) {

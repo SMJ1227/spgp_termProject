@@ -23,7 +23,7 @@ public class Sprite implements IGameObject {
         if (mipmapId != 0) {
             bitmap = BitmapPool.get(mipmapId);
         }
-        Log.v(TAG, "Created " + this.getClass().getSimpleName() + "@" + System.identityHashCode(this));
+        //Log.v(TAG, "Created " + this.getClass().getSimpleName() + "@" + System.identityHashCode(this));
     }
     public Sprite(int mipmapId, float x, float y, float width, float height) {
         if (mipmapId != 0) {

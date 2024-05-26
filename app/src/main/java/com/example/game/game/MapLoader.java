@@ -1,6 +1,7 @@
 package com.example.game.game;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.Random;
 

@@ -22,14 +22,14 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
     private static final String TAG = MapObject.class.getSimpleName();
     protected static Random random = new Random();
     public static float SPEED = -2.0f;
-    public static float speedTime = 5.0f;
+    public static float speedTime = 100.0f;
 
     @Override
     public void update(float elapsedSeconds) {
         speedTime -= elapsedSeconds;
         if (speedTime < 0) {
-            speedTime = 5.0f;
-            if(SPEED > -4.0f){
+            speedTime = 100.0f;
+            if(SPEED > -6.0f){
                 SPEED -= 0.1f;
                 Log.v(TAG, "mapobj" + String.valueOf(SPEED));
             }
