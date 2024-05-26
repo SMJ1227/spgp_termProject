@@ -106,11 +106,19 @@ public class Player extends SheetSprite implements IBoxCollidable {
             case goBack:
                 dx = -SPEED * elapsedSeconds;
                 x += dx;
+                if (x < 0) {
+                    x = 0;
+                    dx = 0;
+                }
                 dstRect.offset(dx, 0);
                 break;
             case running:
                 dx = SPEED * elapsedSeconds;
                 x += dx;
+                if (x > Metrics.width - width) {
+                    x = Metrics.width - width;
+                    dx = 0;
+                }
                 dstRect.offset(dx, 0);
                 break;
             case throwing:
