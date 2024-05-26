@@ -34,31 +34,16 @@ public class EnemyGenerator implements IGameObject {
         wave++;
 
         int[] what = new int[3];
-        boolean all1 = true;
-        while(true){
-            for (int i = 0; i < 3; i++) {
-                what[i] = 0;//random.nextInt(2);
-            }
-            for (int i = 0; i < 3; i++) {
-                if(what[i] == 0){
-                    all1 = false;
-                    break;
-                }
-            }
-            if(!all1){
-                break;
-            }
+        for (int i = 0; i < 3; i++) {
+            what[i] = random.nextInt(2);
         }
         //Log.v(TAG, "Generating: wave " + wave);
         for (int i = 0; i < 3; i++) {
             int level = (wave + 15) / 10 - random.nextInt(3);
             if (level < 0) level = 0;
             if (level > Enemy.MAX_LEVEL) level = Enemy.MAX_LEVEL;
-
-            switch (what[i]){
-                case 0:
-                    scene.add(MainScene.Layer.enemy, Enemy.get(level, i));
-                    break;
+            if(what[i] == 0){
+                scene.add(MainScene.Layer.enemy, Enemy.get(level, i));
             }
         }
     }

@@ -17,7 +17,7 @@ import com.example.game.framework.util.Gauge;
 
 public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     private static final String TAG = Sprite.class.getSimpleName();
-    public static float SPEED = 3.0f;
+    public static float SPEED = 6.0f;
     private static final float RADIUS = 0.5f;
     public static final int MAX_LEVEL = 20;
     protected RectF collisionRect = new RectF();
