@@ -45,7 +45,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
             makeRects(300, 301, 300),              // State.throwing
             makeRects(300, 301, 302, 303),              // State.attack
-            makeRects(400, 401),                  // State.falling
+            makeRects(207, 208),                  // State.falling
             makeRects(304, 206, 305, 307, 307, 307, 307, 307, 307, 307, 307, 307, 308, 309),                   // State.hurt
     };
     protected static float[][] edgeInsetRatios = {
@@ -55,7 +55,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.jump
             { 0.2f, 0.5f, 0.0f, 0.0f }, // throwing
             { 0.2f, 0.5f, 0.0f, 0.0f }, // attack
-            { 0.2f, 0.0f, 0.2f, 0.0f }, // State.falling
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // State.falling
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.hurt
     };
     protected static Rect[] makeRects(int... indices) {
