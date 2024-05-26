@@ -17,15 +17,10 @@ import com.example.game.framework.util.Gauge;
 
 public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     private static final String TAG = Sprite.class.getSimpleName();
-    public static float SPEED = 6.0f;
     private static final float RADIUS = 0.5f;
     public static final int MAX_LEVEL = 20;
     protected RectF collisionRect = new RectF();
     private int level;
-    private int life, maxLife;
-    private float speedTime = 5.0f;
-    protected Gauge gauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
-
     public enum State {
         alive, die
     }
@@ -63,11 +58,10 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     private Enemy(int level, int index) {
         super(R.mipmap.bees, 20);
         init(level, index);
-        dx = -SPEED;
+        dx = MapObject.SPEED * 2;
     }
     private void init(int level, int index) {
         this.level = level;
-        this.life = this.maxLife = (level + 1) * 10;
         if(index == 0){
             setPosition(Metrics.width, Metrics.height / 4 * (index+1) - 0.8f, RADIUS);
         }
@@ -90,14 +84,6 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     @Override
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);
-        speedTime -= elapsedSeconds;
-        if (speedTime < 0) {
-            speedTime = 5.0f;
-            if(SPEED < 8.0f){
-                SPEED += 0.1f;
-                Log.v(TAG, String.valueOf(SPEED));
-            }
-        }
         if (dstRect.right < 0) {
             Scene.top().remove(MainScene.Layer.enemy, this);
         }
@@ -108,7 +94,6 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
         canvas.save();
         canvas.translate(dstRect.left, dstRect.bottom);
         canvas.scale(dstRect.width(), dstRect.height());
-        gauge.draw(canvas, (float)life / maxLife);
         canvas.restore();
     }
     @Override
@@ -124,9 +109,6 @@ public class Enemy extends SheetSprite implements IBoxCollidable, IRecyclable {
     public int getScore() {
         return (level + 1) * 100;
     }
-    public boolean decreaseLife(int power) {
-        life -= power;
-        return life <= 0;
-    }
+
 }
 
