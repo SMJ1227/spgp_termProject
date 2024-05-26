@@ -18,14 +18,11 @@ public class Platform extends MapObject {
         static final int[] heights = { 2, 1 };
     }
     private boolean passes;
-    private Platform() {}
-
-    @Override
-    protected MainScene.Layer getLayer() {
-        return MainScene.Layer.platform;
+    private Platform() {
+        super(MainScene.Layer.platform);
     }
 
-    public static Platform get(Type type, float left, float top, int floor) {
+    public static Platform get(Type type, float left, float top) {
         if (type == Type.RANDOM) {
             type = Type.T_10x2;
         }
@@ -33,18 +30,18 @@ public class Platform extends MapObject {
         if (platform == null) {
             platform = new Platform();
         }
-        platform.init(type, left, top, floor);
+        platform.init(type, left, top);
         return platform;
     }
 
-    private void init(Type type, float left, float top, int floor) {
+    private void init(Type type, float left, float top) {
         bitmap = BitmapPool.get(type.resId());
         width = type.width();
         height = type.height();
         dstRect.set(left, top, left + width, top + height);
-        if(floor != 2) {
+        /*if(floor != 2) {
             passes = type == Type.T_3x1;
-        }
+        }*/
     }
     public boolean canPass() {
         return passes;

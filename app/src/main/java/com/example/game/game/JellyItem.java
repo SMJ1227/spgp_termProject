@@ -16,6 +16,7 @@ public class JellyItem extends MapObject {
     private static final float INSET = 0.20f;
     private final RectF collisionRect = new RectF();
     private JellyItem() {
+        super(MainScene.Layer.item);
         bitmap = BitmapPool.get(R.mipmap.jelly);
         srcRect = new Rect();
     }
@@ -36,11 +37,6 @@ public class JellyItem extends MapObject {
         width = height = 1;
         dstRect.set(left, top, left + width, top + height);
         fixCollisionRect();
-    }
-
-    @Override
-    protected MainScene.Layer getLayer() {
-        return MainScene.Layer.item;
     }
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);

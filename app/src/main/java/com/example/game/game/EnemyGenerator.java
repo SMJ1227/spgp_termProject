@@ -37,7 +37,7 @@ public class EnemyGenerator implements IGameObject {
         boolean all1 = true;
         while(true){
             for (int i = 0; i < 3; i++) {
-                what[i] = random.nextInt(2);
+                what[i] = 0;//random.nextInt(2);
             }
             for (int i = 0; i < 3; i++) {
                 if(what[i] == 0){
@@ -58,9 +58,6 @@ public class EnemyGenerator implements IGameObject {
             switch (what[i]){
                 case 0:
                     scene.add(MainScene.Layer.enemy, Enemy.get(level, i));
-                    break;
-                case 1:
-                    scene.add(MainScene.Layer.disturb, Disturb.get(i));
                     break;
             }
         }

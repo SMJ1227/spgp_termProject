@@ -12,6 +12,7 @@ import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.objects.Button;
 import com.example.game.framework.objects.SheetSprite;
 import com.example.game.framework.scene.Scene;
+import com.example.game.framework.util.CollisionHelper;
 import com.example.game.framework.view.Metrics;
 
 public class Player extends SheetSprite implements IBoxCollidable {
@@ -21,7 +22,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float SPEED = 3.0f;
     private static float dx;
     public enum State {
-        walking, goBack, running, jump, doubleJump, throwing, attack, falling,  COUNT
+        walking, goBack, running, jump, doubleJump, throwing, attack, falling, hurt, COUNT
     }
     private float jumpSpeed;
     private static final float JUMP_POWER = 7.5f;
@@ -31,6 +32,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private float  attackTime = 0.40f;
     private final RectF collisionRect = new RectF();
     protected State state = State.walking;
+    protected Obstacle obstacle;
     protected static Rect[][] srcRectsArray = {
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.walking
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.goBack
@@ -40,6 +42,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(300, 301, 300),              // State.throwing
             makeRects(300, 301, 302, 303),              // State.attack
             makeRects(400, 401),                  // State.falling
+            makeRects(400, 401),           // State.hurt
     };
     protected static float[][] edgeInsetRatios = {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.walking
@@ -50,6 +53,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // throwing
             { 0.2f, 0.5f, 0.0f, 0.0f }, // attack
             { 0.2f, 0.0f, 0.2f, 0.0f }, // State.falling
+            { 0.2f, 0.5f, 0.0f, 0.0f }, // State.hurt
     };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
@@ -115,6 +119,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 if(attackTime < 0) {
                     attackTime = 0.40f;
                     setState(State.walking);
+                }
+                break;
+            case hurt:
+                if (!CollisionHelper.collides(this, obstacle)) {
+                    setState(State.running);
+                    obstacle = null;
                 }
                 break;
         }
@@ -207,6 +217,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
             setState(State.walking);
             dx = 0;
         }
+    }
+    public void hurt(Obstacle obstacle) {
+        if (state == State.hurt) return;
+        setState(State.hurt);
+        fixCollisionRect();
+        this.obstacle = obstacle;
     }
     public void goBack(Button.Action action) {
         if(action == Button.Action.pressed){

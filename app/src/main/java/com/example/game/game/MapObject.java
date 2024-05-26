@@ -13,8 +13,10 @@ import com.example.game.framework.objects.Sprite;
 import com.example.game.framework.scene.Scene;
 
 public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyclable {
-    public MapObject() {
+    protected MainScene.Layer layer;
+    protected MapObject(MainScene.Layer layer) {
         super(0);
+        this.layer = layer;
     }
 
     private static final String TAG = MapObject.class.getSimpleName();
@@ -46,14 +48,13 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
         return getClass().getSimpleName() + "@" + System.identityHashCode(this) + "(" + width + "x" + height + ")";
     }
 
-    abstract protected MainScene.Layer getLayer();
     public void addToScene() {
         Scene scene = Scene.top();
         if (scene == null) {
             //Log.e(TAG, "Scene stack is empty in addToScene() " + this.getClass().getSimpleName());
             return;
         }
-        scene.add(getLayer(), this);
+        scene.add(layer, this);
     }
     public void removeFromScene() {
         Scene scene = Scene.top();
@@ -61,7 +62,7 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
             //Log.e(TAG, "Scene stack is empty in removeFromScene() " + this.getClass().getSimpleName());
             return;
         }
-        scene.remove(getLayer(), this);
+        scene.remove(layer, this);
     }
 
     @Override
@@ -72,5 +73,10 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
     @Override
     public void onRecycle() {
 
+    }
+    public void pause() {
+    }
+
+    public void resume() {
     }
 }

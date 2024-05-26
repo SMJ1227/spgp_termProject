@@ -89,7 +89,7 @@ public class Disturb extends SheetSprite implements IBoxCollidable, IRecyclable 
             }
         }
         if (dstRect.right < 0) {
-            Scene.top().remove(MainScene.Layer.disturb, this);
+            //Scene.top().remove(MainScene.Layer.disturb, this);
         }
         fixCollisionRect();
     }

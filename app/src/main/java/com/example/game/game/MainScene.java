@@ -14,7 +14,7 @@ import com.example.game.framework.objects.Sprite;
 public class MainScene extends Scene {
     private static final String TAG = MainScene.class.getSimpleName();
     public enum Layer {
-        bg, platform, item, enemy, disturb, bullet, swordEffect, player, ui, touch, controller, COUNT
+        bg, platform, item, enemy, obstacle, bullet, swordEffect, player, ui, touch, controller, COUNT
     }
     private final Player player;
     Score score; // package private
