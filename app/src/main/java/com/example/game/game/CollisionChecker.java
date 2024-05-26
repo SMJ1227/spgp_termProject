@@ -37,6 +37,20 @@ public class CollisionChecker implements IGameObject {
                 }
             }
         }
+        // sword enemy 충돌체크
+        for (int e = enemies.size() - 1; e >= 0; e--) {
+            Enemy enemy = (Enemy)enemies.get(e);
+            ArrayList<IGameObject> swordEffects = scene.objectsAt(MainScene.Layer.swordEffect);
+            for (int b = swordEffects.size() - 1; b >= 0; b--) {
+                Attack swordEffect = (Attack)swordEffects.get(b);
+                if (CollisionHelper.collides(enemy, swordEffect)) {
+                    Log.d(TAG, "Collision !!"); 
+                    scene.remove(MainScene.Layer.enemy, enemy);
+                    scene.addScore(enemy.getScore());
+                    break;
+                }
+            }
+        }
         // player item 충돌체크
         ArrayList<IGameObject> items = scene.objectsAt(MainScene.Layer.item);
         for (int i = items.size() - 1; i >= 0; i--) {

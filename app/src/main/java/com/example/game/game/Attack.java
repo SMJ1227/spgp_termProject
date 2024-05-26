@@ -10,7 +10,7 @@ import com.example.game.framework.scene.RecycleBin;
 import com.example.game.framework.scene.Scene;
 import com.example.game.framework.view.Metrics;
 
-public class Attack extends Sprite implements /*IBoxCollidable,*/ IRecyclable {
+public class Attack extends Sprite implements IBoxCollidable, IRecyclable {
     private static final float EFFECT_WIDTH = 1.0f;
     private static final float EFFECT_HEIGHT = 2.0f;
     private float lifeTime = 0.2f;
@@ -39,11 +39,11 @@ public class Attack extends Sprite implements /*IBoxCollidable,*/ IRecyclable {
             lifeTime = 0.2f;
         }
     }
-/*
+
     @Override
     public RectF getCollisionRect() {
         return dstRect;
-    }*/
+    }
 
     @Override
     public void onRecycle() {    }
