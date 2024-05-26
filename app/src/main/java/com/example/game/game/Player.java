@@ -42,7 +42,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(300, 301, 300),              // State.throwing
             makeRects(300, 301, 302, 303),              // State.attack
             makeRects(400, 401),                  // State.falling
-            makeRects(400, 401),           // State.hurt
+            makeRects(304, 305, 306, 307, 308, 309),                   // State.hurt
     };
     protected static float[][] edgeInsetRatios = {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.walking
