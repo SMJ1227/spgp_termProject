@@ -123,7 +123,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 break;
             case hurt:
                 if (!CollisionHelper.collides(this, obstacle)) {
-                    setState(State.running);
+                    setState(State.walking);
                     obstacle = null;
                 }
                 break;

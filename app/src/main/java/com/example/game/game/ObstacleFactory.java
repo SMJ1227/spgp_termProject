@@ -3,7 +3,7 @@ package com.example.game.game;
 import com.example.game.framework.scene.RecycleBin;
 
 public class ObstacleFactory {
-    public static final int COUNT = 4;
+    public static final int COUNT = 3;
     public static Obstacle get(int index, float left, float top) {
         Obstacle obs = null;
         switch (index) {
@@ -13,13 +13,13 @@ public class ObstacleFactory {
                     obs = new Obstacle();
                 }
                 break;
-            case 1: case 2:
+            case 1:
                 obs = (Obstacle) RecycleBin.get(AnimObstacle.class);
                 if (obs == null) {
                     obs = new AnimObstacle();
                 }
                 break;
-            default:
+            case 2:
                 obs = (Obstacle) RecycleBin.get(FallingObstacle.class);
                 if (obs == null) {
                     obs = new FallingObstacle();
