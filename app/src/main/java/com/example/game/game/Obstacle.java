@@ -9,7 +9,16 @@ public class Obstacle extends MapObject {
     }
 
     protected void init(int index, float left, float top) {
-        init(left, top, R.mipmap.epn01_tm01_jp1a);
+        int x = random.nextInt(3);
+        if(x == 0){
+            init(left, top - 1.0f, R.mipmap.epn01_tm01_jp1a);
+        }
+        else if(x == 1){
+            init(left, top - 3.0f, R.mipmap.epn01_tm01_jp1a);
+        }
+        else{
+            init(left, top - 5.0f, R.mipmap.epn01_tm01_jp1a);
+        }
     }
     protected void init(float left, float top, int resId) {
         bitmap = BitmapPool.get(resId);
