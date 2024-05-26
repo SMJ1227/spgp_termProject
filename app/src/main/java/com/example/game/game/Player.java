@@ -21,9 +21,13 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private static final float INVINCIBILITY_DURATION = 1.0f;
     private float invincibilityTime = 0;
     public static boolean isInvincibility = false;
-    private static final float FIRE_INTERVAL = 1.25f;
-    private static final float ATTACK_INTERVAL = 1.0f;
     private static final float BULLET_OFFSET = 0f;
+    public static final float FIRE_INTERVAL = 10.0f;
+    public static float fireCoolTime = 0;
+    private float  throwTime = 0.20f;
+    public static final float ATTACK_INTERVAL = 5.0f;
+    public static float attackCoolTime = 0;
+    private float  attackTime = 0.40f;
     private static final float SPEED = 3.0f;
     private static float dx, dy, foot, floor;
     public enum State {
@@ -32,10 +36,6 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private float jumpSpeed;
     private static final float JUMP_POWER = 10.0f;
     private static final float GRAVITY = 25.0f;
-    private float fireCoolTime = 0;
-    private float attackCoolTime = 0;
-    private float  attackTime = 0.40f;
-    private float  throwTime = 0.20f;
     private final RectF collisionRect = new RectF();
     protected State state = State.walking;
     protected Obstacle obstacle;

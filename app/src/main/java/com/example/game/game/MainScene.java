@@ -2,6 +2,7 @@ package com.example.game.game;
 
 import android.view.MotionEvent;
 import android.util.Log;
+import android.graphics.Canvas;
 
 import com.example.game.R;
 import com.example.game.framework.objects.Score;
@@ -10,18 +11,22 @@ import com.example.game.framework.scene.Scene;
 import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.objects.Button;
 import com.example.game.framework.objects.Sprite;
+import com.example.game.framework.util.Gauge;
 
 public class MainScene extends Scene {
     private static final String TAG = MainScene.class.getSimpleName();
+
     public enum Layer {
-        bg, platform, item, enemy, obstacle, bullet, swordEffect, player, ui, touch, controller, COUNT
+        bg, platform, item, enemy, obstacle, bullet, swordEffect, player, ui, touch, gauge, controller, COUNT
     }
     private final Player player;
     Score score; // package private
     public int getScore() {
         return score.getScore();
     }
-
+    private static final float MAX_COOL_TIME = 1.0f;
+    protected Gauge attackGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
+    protected Gauge fireGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
     public MainScene() {
         initLayers(Layer.COUNT);
 
@@ -42,6 +47,7 @@ public class MainScene extends Scene {
                 return true;
             }
         }));
+
         add(Layer.touch, new Button(R.mipmap.btn_shoot_n, 12.5f, 8.5f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {
@@ -93,4 +99,28 @@ public class MainScene extends Scene {
 
     @Override
     protected int getTouchLayerIndex() { return Layer.touch.ordinal(); }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        // 공격 게이지 그리기
+        canvas.save();
+        canvas.translate(12.0f, 7.9f); // 공격 게이지 위치 설정 (btn_attack_n 버튼 위)
+        float attackCoolTime = Player.attackCoolTime;
+        float attackInterval = Player.ATTACK_INTERVAL;
+        if (attackCoolTime > 0) {
+            attackGauge.draw(canvas, attackCoolTime/attackInterval);  // 공격 게이지 값을 직접 전달
+        }
+        canvas.restore();
+
+        // 화염 게이지 그리기
+        canvas.save();
+        canvas.translate(12.0f, 8.7f); // 화염 게이지 위치 설정 (btn_attack_n 버튼 아래)
+        float fireCoolTime = Player.fireCoolTime;
+        float fireInterval = Player.FIRE_INTERVAL;
+        if (fireCoolTime > 0) {
+            fireGauge.draw(canvas, fireCoolTime/fireInterval);  // 화염 게이지 값을 직접 전달
+        }
+        canvas.restore();
+    }
 }
