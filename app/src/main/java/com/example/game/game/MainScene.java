@@ -38,14 +38,14 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_attack_n, 12.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {
-                player.attack(action == Button.Action.pressed);
+                player.attack();
                 return true;
             }
         }));
         add(Layer.touch, new Button(R.mipmap.btn_shoot_n, 12.5f, 8.5f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {
-                player.throwing(action == Button.Action.pressed);
+                player.throwing();
                 return true;
             }
         }));

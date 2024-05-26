@@ -32,9 +32,10 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private float jumpSpeed;
     private static final float JUMP_POWER = 10.0f;
     private static final float GRAVITY = 25.0f;
-    private float fireCoolTime = FIRE_INTERVAL;
-    private float attackCoolTime = ATTACK_INTERVAL;
+    private float fireCoolTime = 0;
+    private float attackCoolTime = 0;
     private float  attackTime = 0.40f;
+    private float  throwTime = 0.20f;
     private final RectF collisionRect = new RectF();
     protected State state = State.walking;
     protected Obstacle obstacle;
@@ -122,7 +123,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 dstRect.offset(dx, 0);
                 break;
             case throwing:
+                throwTime -= elapsedSeconds;
                 fireBullet(elapsedSeconds);
+                if(throwTime < 0) {
+                    throwTime = 0.20f;
+                    setState(State.walking);
+                }
                 break;
             case attack:
                 attackTime -= elapsedSeconds;
@@ -198,10 +204,8 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public void jump() {
         if (state == State.hurt) return;
         if (state != State.walking && state != State.running) return;
-        //if (state == State.walking) {
-            jumpSpeed = -JUMP_POWER;
-            setState(State.jump);
-        //}
+        jumpSpeed = -JUMP_POWER;
+        setState(State.jump);
     }
     public void fall() {
         if (state == State.hurt) return;
@@ -215,22 +219,20 @@ public class Player extends SheetSprite implements IBoxCollidable {
         collisionRect.offset(0, 0.001f);
         jumpSpeed = 0;
     }
-    public void throwing(boolean startsSlide) {
+    public void throwing() {
+        if(fireCoolTime > 0) return;
         if (state == State.hurt) return;
-        if (state == State.walking && startsSlide) {
+        if (state == State.walking || state == State.running) {
             setState(State.throwing);
             return;
         }
-        if (state == State.throwing && !startsSlide) {
-            setState(State.walking);
-            //return;
-        }
     }
-    public void attack(boolean startsSlide) {
+    public void attack() {
+        if (attackCoolTime > 0) return;
         if (state == State.hurt) return;
-        if (state == State.walking && startsSlide) {
+        if (state == State.walking || state == State.running) {
             setState(State.attack);
-            //return;
+            return;
         }
     }
     public void running(Button.Action action) {
@@ -277,8 +279,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         if (scene == null) return;
         if (attackCoolTime > 0) return;
 
-        attackCoolTime = FIRE_INTERVAL;
-        attackTime = 0.40f;
+        attackCoolTime = ATTACK_INTERVAL;
 
         int score = scene.getScore();
         int power = 10 + score / 1000;
