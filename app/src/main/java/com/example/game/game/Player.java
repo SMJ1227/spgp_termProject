@@ -2,6 +2,7 @@ package com.example.game.game;
 
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -16,16 +17,20 @@ import com.example.game.framework.util.CollisionHelper;
 import com.example.game.framework.view.Metrics;
 
 public class Player extends SheetSprite implements IBoxCollidable {
+    private static final String TAG = CollisionChecker.class.getSimpleName();
+    private static final float INVINCIBILITY_DURATION = 1.0f;
+    private float invincibilityTime = 0;
+    public static boolean isInvincibility = false;
     private static final float FIRE_INTERVAL = 1.25f;
     private static final float ATTACK_INTERVAL = 1.0f;
     private static final float BULLET_OFFSET = 0f;
     private static final float SPEED = 3.0f;
-    private static float dx;
+    private static float dx, dy, foot, floor;
     public enum State {
-        walking, goBack, running, jump, doubleJump, throwing, attack, falling, hurt, COUNT
+        walking, goBack, running, jump, throwing, attack, falling, hurt, COUNT
     }
     private float jumpSpeed;
-    private static final float JUMP_POWER = 8.5f;
+    private static final float JUMP_POWER = 10.0f;
     private static final float GRAVITY = 25.0f;
     private float fireCoolTime = FIRE_INTERVAL;
     private float attackCoolTime = ATTACK_INTERVAL;
@@ -38,18 +43,16 @@ public class Player extends SheetSprite implements IBoxCollidable {
             makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.goBack
             makeRects(100, 101, 102, 103, 104, 105, 106, 107), // State.running
             makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
-            makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.doublejump
             makeRects(300, 301, 300),              // State.throwing
             makeRects(300, 301, 302, 303),              // State.attack
             makeRects(400, 401),                  // State.falling
-            makeRects(304, 305, 306, 307, 308, 309),                   // State.hurt
+            makeRects(304, 206, 305, 307, 307, 307, 307, 307, 307, 307, 307, 307, 308, 309),                   // State.hurt
     };
     protected static float[][] edgeInsetRatios = {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.walking
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.goBack
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.running
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.jump
-            { 0.2f, 0.5f, 0.2f, 0.0f }, // State.doubleJump
             { 0.2f, 0.5f, 0.0f, 0.0f }, // throwing
             { 0.2f, 0.5f, 0.0f, 0.0f }, // attack
             { 0.2f, 0.0f, 0.2f, 0.0f }, // State.falling
@@ -75,15 +78,15 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public void update(float elapsedSeconds) {
         fireCoolTime -= elapsedSeconds;
         attackCoolTime -= elapsedSeconds;
+        invincibilityTime -= elapsedSeconds;
         switch (state) {
             case jump:
-            case doubleJump:
             case falling:
-                float dy = jumpSpeed * elapsedSeconds;
+                dy = jumpSpeed * elapsedSeconds;
                 jumpSpeed += GRAVITY * elapsedSeconds;
                 if (jumpSpeed >= 0) { // 낙하하고 있다면 발밑에 땅이 있는지 확인한다
-                    float foot = collisionRect.bottom;
-                    float floor = findNearestPlatformTop(foot);
+                    foot = collisionRect.bottom;
+                    floor = findNearestPlatformTop(foot);
                     if (foot + dy >= floor) {
                         dy = floor - foot;
                         setState(State.walking);
@@ -93,8 +96,8 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 dstRect.offset(0, dy);
                 break;
             case walking:
-                float foot = collisionRect.bottom;
-                float floor = findNearestPlatformTop(foot);
+                foot = collisionRect.bottom;
+                floor = findNearestPlatformTop(foot);
                 if (foot < floor) {
                     setState(State.falling);
                     jumpSpeed = 0;
@@ -122,10 +125,23 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 }
                 break;
             case hurt:
-                if (!CollisionHelper.collides(this, obstacle)) {
+                Log.v(TAG, String.valueOf(invincibilityTime));
+                if(invincibilityTime < 0){
                     setState(State.walking);
                     obstacle = null;
+                    isInvincibility = false;
                 }
+                dy = jumpSpeed * elapsedSeconds;
+                jumpSpeed += GRAVITY * elapsedSeconds;
+                if (jumpSpeed >= 0) { // 낙하하고 있다면 발밑에 땅이 있는지 확인한다
+                    foot = collisionRect.bottom;
+                    floor = findNearestPlatformTop(foot);
+                    if (foot + dy >= floor) {
+                        dy = floor - foot;
+                    }
+                }
+                y += dy;
+                dstRect.offset(0, dy);
                 break;
         }
         fixCollisionRect();
@@ -172,15 +188,15 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
 
     public void jump() {
-        if (state == State.walking) {
+        if (state == State.hurt) return;
+        if (state != State.walking && state != State.running) return;
+        //if (state == State.walking) {
             jumpSpeed = -JUMP_POWER;
             setState(State.jump);
-        } else if (state == State.jump) {
-            jumpSpeed = -JUMP_POWER;
-            setState(State.doubleJump);
-        }
+        //}
     }
     public void fall() {
+        if (state == State.hurt) return;
         if (state != State.walking) return;
         float foot = collisionRect.bottom;
         Platform platform = findNearestPlatform(foot);
@@ -192,6 +208,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         jumpSpeed = 0;
     }
     public void throwing(boolean startsSlide) {
+        if (state == State.hurt) return;
         if (state == State.walking && startsSlide) {
             setState(State.throwing);
             return;
@@ -202,12 +219,14 @@ public class Player extends SheetSprite implements IBoxCollidable {
         }
     }
     public void attack(boolean startsSlide) {
+        if (state == State.hurt) return;
         if (state == State.walking && startsSlide) {
             setState(State.attack);
             //return;
         }
     }
     public void running(Button.Action action) {
+        if (state == State.hurt) return;
         if(action == Button.Action.pressed){
             if (state == State.walking || state == State.running) {
                 setState(State.running);
@@ -221,10 +240,13 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public void hurt(Obstacle obstacle) {
         if (state == State.hurt) return;
         setState(State.hurt);
+        invincibilityTime = INVINCIBILITY_DURATION;
+        isInvincibility = true;
         fixCollisionRect();
         this.obstacle = obstacle;
     }
     public void goBack(Button.Action action) {
+        if (state == State.hurt) return;
         if(action == Button.Action.pressed){
             if (state == State.walking || state == State.running) {
                 setState(State.goBack);

@@ -51,10 +51,12 @@ public class CollisionChecker implements IGameObject {
         }
         // player Obstacle 충돌체크
         ArrayList<IGameObject> obstacles = scene.objectsAt(MainScene.Layer.obstacle);
-        for (int i = obstacles.size() - 1; i >= 0; i--) {
-            Obstacle obstacle = (Obstacle) obstacles.get(i);
-            if (CollisionHelper.collides(player, obstacle)) {
-                player.hurt(obstacle);
+        if(!Player.isInvincibility) {
+            for (int i = obstacles.size() - 1; i >= 0; i--) {
+                Obstacle obstacle = (Obstacle) obstacles.get(i);
+                if (CollisionHelper.collides(player, obstacle)) {
+                    player.hurt(obstacle);
+                }
             }
         }
     }
