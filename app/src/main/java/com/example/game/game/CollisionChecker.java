@@ -49,6 +49,7 @@ public class CollisionChecker implements IGameObject {
                 scene.addScore(JellyItem.getScore());
             }
         }
+        // player Obstacle 충돌체크
         ArrayList<IGameObject> obstacles = scene.objectsAt(MainScene.Layer.obstacle);
         for (int i = obstacles.size() - 1; i >= 0; i--) {
             Obstacle obstacle = (Obstacle) obstacles.get(i);

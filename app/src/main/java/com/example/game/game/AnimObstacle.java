@@ -31,20 +31,10 @@ public class AnimObstacle extends Obstacle {
     private final RectF collisionRect = new RectF();
 
     protected void init(int resIndex, float left, float top) {
-        Log.d("AnimObstacle", "Initializing with resIndex: " + resIndex);
-
-        // 유효한 resIndex 값인지 확인
-        if (resIndex < 0 || resIndex >= RES_ID_ARRAYS.length) {
-            Log.e("AnimObstacle", "Invalid resIndex: " + resIndex + ". Setting resIndex to default value 0.");
-            resIndex = 0; // 기본값으로 설정
-        }
-        this.resIndex = resIndex;
-
-        int defResId = RES_ID_ARRAYS[this.resIndex][1];
-        Log.d("AnimObstacle", "Default resource ID: " + defResId);
+        int defResId = RES_ID_ARRAYS[resIndex][1];
 
         // 이미지의 크기를 결정할 때는 0번이 아닌 1번 이미지 기준으로 하도록 한다.
-        init(left, top, defResId);
+        init(left, top - 1.0f, defResId);
 
         time = 0;
         bitmap = BitmapPool.get(R.mipmap.trans_00p);

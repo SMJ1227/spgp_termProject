@@ -25,8 +25,8 @@ public class Player extends SheetSprite implements IBoxCollidable {
         walking, goBack, running, jump, doubleJump, throwing, attack, falling, hurt, COUNT
     }
     private float jumpSpeed;
-    private static final float JUMP_POWER = 7.5f;
-    private static final float GRAVITY = 20.0f;
+    private static final float JUMP_POWER = 8.5f;
+    private static final float GRAVITY = 25.0f;
     private float fireCoolTime = FIRE_INTERVAL;
     private float attackCoolTime = ATTACK_INTERVAL;
     private float  attackTime = 0.40f;

@@ -14,7 +14,7 @@ public class FallingObstacle extends Obstacle {
         init(left, top, RES_ID);
 
         float destTop = dstRect.top - 3f;
-        dstRect.offset(0, -dstRect.height());   
+        dstRect.offset(0, -dstRect.height());
 
         initAnimator();
         animator.setFloatValues(dstRect.top, destTop);
