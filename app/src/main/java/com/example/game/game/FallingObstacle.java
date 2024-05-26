@@ -13,8 +13,8 @@ public class FallingObstacle extends Obstacle {
     protected void init(int index, float left, float top) {
         init(left, top, RES_ID);
 
-        float destTop = dstRect.top - 1;
-        dstRect.offset(0, -dstRect.height());
+        float destTop = dstRect.top - 3f;
+        dstRect.offset(0, -dstRect.height());   
 
         initAnimator();
         animator.setFloatValues(dstRect.top, destTop);
@@ -25,8 +25,8 @@ public class FallingObstacle extends Obstacle {
     private void initAnimator() {
         if (animator != null) return;
         animator = new ValueAnimator();
-        animator.setDuration(2000);
-        animator.setStartDelay(1300);
+        animator.setDuration(1800);
+        animator.setStartDelay(800);
         animator.setInterpolator(new BounceInterpolator());
         animator.addUpdateListener(animListener);
     }
