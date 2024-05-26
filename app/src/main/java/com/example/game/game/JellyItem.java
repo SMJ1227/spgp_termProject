@@ -8,9 +8,9 @@ import com.example.game.framework.res.BitmapPool;
 import com.example.game.framework.scene.RecycleBin;
 
 public class JellyItem extends MapObject {
-    public static final int JELLY_COUNT = 60;
+    public static final int JELLY_COUNT = 62;
     public static final int RANDOM = JELLY_COUNT + 1;
-    private static final int ITEMS_IN_A_ROW = 30;
+    private static final int ITEMS_IN_A_ROW = 31;
     private static final int SIZE = 66;
     private static final int BORDER = 2;
     private static final float INSET = 0.20f;

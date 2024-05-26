@@ -44,7 +44,7 @@ public class CollisionChecker implements IGameObject {
             for (int b = swordEffects.size() - 1; b >= 0; b--) {
                 Attack swordEffect = (Attack)swordEffects.get(b);
                 if (CollisionHelper.collides(enemy, swordEffect)) {
-                    Log.d(TAG, "Collision !!"); 
+                    Log.d(TAG, "Collision !!");
                     scene.remove(MainScene.Layer.enemy, enemy);
                     scene.addScore(enemy.getScore());
                     break;
