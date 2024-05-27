@@ -12,6 +12,7 @@ public class MapLoader implements IGameObject {
     private final MainScene scene;
     private final Random random = new Random();
     private float platformX, itemX;
+    private boolean makeObstacle = true;
     public MapLoader(MainScene scene) {
         this.scene = scene;
     }
@@ -31,9 +32,15 @@ public class MapLoader implements IGameObject {
             int y2;
 
             int count = 3;
-            int index = random.nextInt(ObstacleFactory.COUNT);
-            Obstacle obstacle = ObstacleFactory.get(index, itemX, 6);
-            scene.add(MainScene.Layer.obstacle, obstacle);
+            if(makeObstacle){
+                int index = random.nextInt(ObstacleFactory.COUNT);
+                Obstacle obstacle = ObstacleFactory.get(index, itemX, 6);
+                scene.add(MainScene.Layer.obstacle, obstacle);
+                makeObstacle = false;
+            }
+            else{
+                makeObstacle = true;
+            }
             for(int i = 0; i < count; i++){
                 Platform platform = Platform.get(Platform.Type.T_3x1, itemX, y, i);
                 platform.addToScene();
