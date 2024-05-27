@@ -18,7 +18,7 @@ import com.example.game.framework.view.Metrics;
 
 public class Player extends SheetSprite implements IBoxCollidable {
     private static final String TAG = CollisionChecker.class.getSimpleName();
-    private static final float INVINCIBILITY_DURATION = 1.0f;
+    private static final float INVINCIBILITY_DURATION = 3.0f;
     private float invincibilityTime = 0;
     public static boolean isInvincibility = false;
     private static final float BULLET_OFFSET = 0f;
@@ -80,6 +80,9 @@ public class Player extends SheetSprite implements IBoxCollidable {
         fireCoolTime -= elapsedSeconds;
         attackCoolTime -= elapsedSeconds;
         invincibilityTime -= elapsedSeconds;
+        if(invincibilityTime < 0){
+            isInvincibility = false;
+        }
         switch (state) {
             case jump:
             case falling:
@@ -139,11 +142,10 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 }
                 break;
             case hurt:
-                Log.v(TAG, String.valueOf(invincibilityTime));
-                if(invincibilityTime < 0){
+                //Log.v(TAG, String.valueOf(invincibilityTime));
+                if(invincibilityTime < 1.0f){
                     setState(State.walking);
                     obstacle = null;
-                    isInvincibility = false;
                 }
                 dy = jumpSpeed * elapsedSeconds;
                 jumpSpeed += GRAVITY * elapsedSeconds;
