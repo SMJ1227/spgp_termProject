@@ -71,9 +71,9 @@ public class Scene {
     }
 
     public static void finishActivity() {
-        //GameView gameView = null;
-        //gaveView.getActivity().finish();
-        GameActivity.activity.finish();
+        if (GameActivity.activity != null) {
+            GameActivity.activity.finish();
+        }
     }
 
     public static void pauseTop() {
@@ -203,6 +203,12 @@ public class Scene {
         objects.remove(gameObject);
         if (gameObject instanceof IRecyclable) {
             RecycleBin.collect((IRecyclable) gameObject);
+        }
+    }
+    public <E extends Enum<E>> void clearLayer(E layer) {
+        ArrayList<IGameObject> objects = layers.get(layer.ordinal());
+        for (IGameObject object : new ArrayList<>(objects)) {
+            remove(layer, object);
         }
     }
 

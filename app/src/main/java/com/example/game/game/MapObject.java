@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Random;
 
+import com.example.game.R;
 import com.example.game.framework.interfaces.IBoxCollidable;
 import com.example.game.framework.interfaces.IRecyclable;
 import com.example.game.framework.objects.Sprite;
@@ -21,7 +22,7 @@ public abstract class MapObject extends Sprite implements IBoxCollidable, IRecyc
 
     private static final String TAG = MapObject.class.getSimpleName();
     protected static Random random = new Random();
-    public static float SPEED = -2.0f;
+    public static float SPEED = -5.5f;//-2.0f;
     public static float speedTime = 100.0f;
 
     @Override

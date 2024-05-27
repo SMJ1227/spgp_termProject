@@ -20,13 +20,13 @@ public class MainScene extends Scene {
         bg, platform, item, enemy, obstacle, bullet, swordEffect, player, ui, touch, gauge, controller, COUNT
     }
     private final Player player;
-    Score score; // package private
+    Score score;
     public int getScore() {
         return score.getScore();
     }
-    private static final float MAX_COOL_TIME = 1.0f;
     protected Gauge attackGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
     protected Gauge fireGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
+    protected boolean bgChanged = false;
     public MainScene() {
         initLayers(Layer.COUNT);
 
@@ -95,6 +95,19 @@ public class MainScene extends Scene {
     @Override
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);
+        if(!bgChanged && MapObject.SPEED < -6.0f){
+            clearLayer(Layer.bg);
+            add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_1, 0.5f));
+            add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_2, 1.0f));
+            add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_3, 1.5f));
+
+            int[] newResIds = {
+                    R.mipmap.cookierun_platform_480x48,
+                    R.mipmap.cookierun_platform_120x40,
+            };
+            Platform.Type.setResIds(newResIds);
+            bgChanged = true;
+        }
     }
 
     @Override
