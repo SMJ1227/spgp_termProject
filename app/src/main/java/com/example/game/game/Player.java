@@ -19,8 +19,8 @@ import com.example.game.framework.view.Metrics;
 public class Player extends SheetSprite implements IBoxCollidable {
     private static final String TAG = CollisionChecker.class.getSimpleName();
     private static final float INVINCIBILITY_DURATION = 3.0f;
-    private float invincibilityTime = 0;
-    public static boolean isInvincibility = false;
+    private float invincibilityTime = 2.0f;
+    public static boolean isInvincibility = true;
     private static final float BULLET_OFFSET = 0f;
     public static final float FIRE_INTERVAL = 10.0f;
     public static float fireCoolTime = 0;
@@ -142,8 +142,8 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 }
                 break;
             case hurt:
-                //Log.v(TAG, String.valueOf(invincibilityTime));
-                if(invincibilityTime < 1.0f){
+                Log.v(TAG, String.valueOf(invincibilityTime));
+                if(invincibilityTime < 2.0f){
                     setState(State.walking);
                     obstacle = null;
                 }

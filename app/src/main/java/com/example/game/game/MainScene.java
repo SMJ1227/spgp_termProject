@@ -83,6 +83,13 @@ public class MainScene extends Scene {
                 return false;
             }
         }));
+        add(Layer.touch, new Button(R.mipmap.btn_pause, 15.0f, 1.0f, 1.0f, 1.0f, new Button.Callback() {
+            @Override
+            public boolean onTouch(Button.Action action) {
+                new PausedScene().push();
+                return false;
+            }
+        }));
         this.score = new Score(R.mipmap.number_24x32, 8.5f, 0.5f, 0.6f);
         score.setScore(0);
         add(Layer.ui, score);
