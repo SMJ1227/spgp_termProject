@@ -1,5 +1,6 @@
 package com.example.game.game;
 
+import android.graphics.Bitmap;
 import android.view.MotionEvent;
 import android.util.Log;
 import android.graphics.Canvas;
@@ -7,6 +8,7 @@ import android.graphics.Canvas;
 import com.example.game.R;
 import com.example.game.framework.objects.Score;
 import com.example.game.framework.objects.HorzScrollBackground;
+import com.example.game.framework.res.BitmapPool;
 import com.example.game.framework.scene.Scene;
 import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.objects.Button;
@@ -26,6 +28,8 @@ public class MainScene extends Scene {
     }
     protected Gauge attackGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
     protected Gauge fireGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
+    Bitmap throwSwordBitmap = BitmapPool.get(R.mipmap.throw_sword); // throw_sword.png 로드
+
     protected boolean bgChanged = false;
     public MainScene() {
         initLayers(Layer.COUNT);
@@ -170,6 +174,15 @@ public class MainScene extends Scene {
         float fireInterval = Player.FIRE_INTERVAL;
         if (fireCoolTime > 0) {
             fireGauge.draw(canvas, fireCoolTime/fireInterval);  // 화염 게이지 값을 직접 전달
+        }
+        canvas.restore();
+
+        // 총알 갯수 그리기
+        canvas.save();
+        canvas.translate(7.0f, 8.7f); // 화염 게이지 위치 설정 (btn_attack_n 버튼 아래)
+        for (int i = 0; i < player.bullets; i++) {
+            canvas.drawBitmap(throwSwordBitmap, i * throwSwordBitmap.getWidth(), 0, null);
+
         }
         canvas.restore();
     }

@@ -59,6 +59,9 @@ public class CollisionChecker implements IGameObject {
                 continue;
             }
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
+                if (gobj instanceof JellyItem && ((JellyItem) gobj).getIndex() == 61) {
+                    player.bullets++;
+                }
                 scene.remove(MainScene.Layer.item, gobj);
                 scene.addScore(JellyItem.getScore());
             }

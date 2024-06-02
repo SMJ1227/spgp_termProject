@@ -15,6 +15,7 @@ public class JellyItem extends MapObject {
     private static final int BORDER = 2;
     private static final float INSET = 0.20f;
     private final RectF collisionRect = new RectF();
+    private int index;
     private JellyItem() {
         super(MainScene.Layer.item);
         bitmap = BitmapPool.get(R.mipmap.jelly);
@@ -33,6 +34,7 @@ public class JellyItem extends MapObject {
     }
 
     private void init(int index, float left, float top) {
+        this.index = index;
         setSrcRect(index);
         width = height = 1;
         dstRect.set(left, top, left + width, top + height);
@@ -59,5 +61,8 @@ public class JellyItem extends MapObject {
     }
     public static int getScore() {
         return 100;
+    }
+    public int getIndex() {  // 인덱스를 반환하는 메서드 추가
+        return index;
     }
 }

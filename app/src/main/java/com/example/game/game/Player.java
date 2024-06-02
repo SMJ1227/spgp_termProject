@@ -29,6 +29,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public static float attackCoolTime = 0;
     private float  attackTime = 0.40f;
     private static final float SPEED = 3.0f;
+    public static int bullets = 5;
     private static float dx, dy, foot, floor;
     public enum State {
         walking, goBack, running, jump, throwing, attack, falling, hurt, COUNT
@@ -293,6 +294,8 @@ public class Player extends SheetSprite implements IBoxCollidable {
         MainScene scene = (MainScene) Scene.top();
         if (scene == null) return;
         if (fireCoolTime > 0) return;
+        if(bullets <= 0) return;
+        bullets--;
 
         fireCoolTime = FIRE_INTERVAL;
 
