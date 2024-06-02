@@ -95,6 +95,21 @@ public class MainScene extends Scene {
         add(Layer.ui, score);
     }
 
+    protected void onStart() {
+        //Sound.playMusic(R.raw.main);
+    }
+
+    @Override
+    protected void onPause() {
+        //Sound.pauseMusic();
+        pauseAnimations();
+    }
+
+    @Override
+    protected void onResume() {
+        resumeAnimations();
+        //Sound.resumeMusic();
+    }
     public void addScore(int amount) {
         score.add(amount);
     }
@@ -119,7 +134,22 @@ public class MainScene extends Scene {
 
     @Override
     protected int getTouchLayerIndex() { return Layer.touch.ordinal(); }
-
+    private void pauseAnimations() {
+        for (IGameObject obj : objectsAt(Layer.obstacle)) {
+            if (!(obj instanceof MapObject)) {
+                continue;
+            }
+            ((MapObject)obj).pause();
+        }
+    }
+    private void resumeAnimations() {
+        for (IGameObject obj : objectsAt(Layer.obstacle)) {
+            if (!(obj instanceof MapObject)) {
+                continue;
+            }
+            ((MapObject)obj).resume();
+        }
+    }
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);

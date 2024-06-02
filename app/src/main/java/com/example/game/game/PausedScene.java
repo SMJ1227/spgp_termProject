@@ -1,6 +1,10 @@
 package com.example.game.game;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+
 import com.example.game.R;
+import com.example.game.framework.activity.GameActivity;
 import com.example.game.framework.objects.Button;
 import com.example.game.framework.objects.Sprite;
 import com.example.game.framework.scene.Scene;
@@ -28,7 +32,18 @@ public class PausedScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_quit_n, 8f, 5.7f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {
-                finishActivity();
+                new AlertDialog.Builder(GameActivity.activity)
+                        .setTitle("Confirm")
+                        .setMessage("Do you really want to exit the game?")
+                        .setNegativeButton("No", null)
+                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finishActivity();
+                            }
+                        })
+                        .create()
+                        .show();
                 return false;
             }
         }));
