@@ -23,12 +23,12 @@ public class MainScene extends Scene {
     }
     private final Player player;
     Score score;
+    Item item;
     public int getScore() {
         return score.getScore();
     }
     protected Gauge attackGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
     protected Gauge fireGauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
-    Bitmap throwSwordBitmap = BitmapPool.get(R.mipmap.throw_sword); // throw_sword.png 로드
 
     protected boolean bgChanged = false;
     public MainScene() {
@@ -97,6 +97,8 @@ public class MainScene extends Scene {
         this.score = new Score(R.mipmap.number_24x32, 8.5f, 0.5f, 0.6f);
         score.setScore(0);
         add(Layer.ui, score);
+        this.item = new Item(R.mipmap.throw_sword, 13.8f, 7.0f, 0.6f);
+        add(Layer.item, item);
     }
 
     protected void onStart() {
@@ -174,15 +176,6 @@ public class MainScene extends Scene {
         float fireInterval = Player.FIRE_INTERVAL;
         if (fireCoolTime > 0) {
             fireGauge.draw(canvas, fireCoolTime/fireInterval);  // 화염 게이지 값을 직접 전달
-        }
-        canvas.restore();
-
-        // 총알 갯수 그리기
-        canvas.save();
-        canvas.translate(7.0f, 8.7f); // 화염 게이지 위치 설정 (btn_attack_n 버튼 아래)
-        for (int i = 0; i < player.bullets; i++) {
-            canvas.drawBitmap(throwSwordBitmap, i * throwSwordBitmap.getWidth(), 0, null);
-
         }
         canvas.restore();
     }

@@ -22,7 +22,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private float invincibilityTime = 2.0f;
     public static boolean isInvincibility = true;
     private static final float BULLET_OFFSET = 0f;
-    public static final float FIRE_INTERVAL = 10.0f;
+    public static float FIRE_INTERVAL = 10.0f;
     public static float fireCoolTime = 0;
     private float  throwTime = 0.20f;
     public static final float ATTACK_INTERVAL = 5.0f;
