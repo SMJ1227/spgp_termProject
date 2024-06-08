@@ -25,7 +25,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public static float FIRE_INTERVAL = 10.0f;
     public static float fireCoolTime = 0;
     private float  throwTime = 0.20f;
-    public static final float ATTACK_INTERVAL = 5.0f;
+    public static float ATTACK_INTERVAL = 5.0f;
     public static float attackCoolTime = 0;
     private float  attackTime = 0.40f;
     private static final float SPEED = 3.0f;
