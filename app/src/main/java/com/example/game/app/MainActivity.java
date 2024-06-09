@@ -19,11 +19,11 @@ import com.example.game.BuildConfig;
 import com.example.game.R;
 import com.example.game.databinding.ActivityMainBinding;
 import com.example.game.game.MainScene;
+import com.example.game.game.Player;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private int cookieIndex;
-    private static final int[] COOKIE_IDS = { 107566, 107567 };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,27 +33,28 @@ public class MainActivity extends AppCompatActivity {
     }
     private void runGameActivity() {
         Intent intent = new Intent(this, RunningActivity.class);
-        intent.putExtra(MainScene.KEY_COOKIE_ID, COOKIE_IDS[cookieIndex]);
+        intent.putExtra(MainScene.KEY_COOKIE_ID, Player.COOKIE_IDS[cookieIndex]);
         startActivity(intent);
     }
     private void setCookieIndex(int index) {
         this.cookieIndex = index;
         try {
-            int cookieId = COOKIE_IDS[index];
+            int cookieId = Player.COOKIE_IDS[index];
             AssetManager assets = getAssets();
             String fileName = cookieId + "_icon.png";
             InputStream is = assets.open(fileName);
             Bitmap bmp = BitmapFactory.decodeStream(is);
             binding.cookieImageView.setImageBitmap(bmp);
+            Player.CookieInfo cookieInfo = Player.cookieInfoMap.get(cookieId);
+            if (cookieInfo != null) {
+                binding.KirbyNameTextView.setText(cookieInfo.name);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        binding.prevCookieButton.setEnabled(index > 0);
-        binding.nextCookieButton.setEnabled(index < COOKIE_IDS.length - 1);
     }
     public void onBtnStartGame(View view) {
-        startActivity(new Intent(this, RunningActivity.class));
+        runGameActivity();
     }
     public void onBtnPreviousCookie(View view) {
         setCookieIndex(cookieIndex - 1);

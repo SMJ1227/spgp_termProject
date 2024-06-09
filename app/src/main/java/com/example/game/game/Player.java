@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.example.game.R;
 import com.example.game.framework.activity.GameActivity;
@@ -45,6 +46,20 @@ public class Player extends SheetSprite implements IBoxCollidable {
     protected State state = State.walking;
     protected Obstacle obstacle;
     private int imageSize = 0;
+    public static class CookieInfo {
+        public String name;
+        public CookieInfo(String name) {
+            this.name = name;
+        }
+    }
+    public static final int[] COOKIE_IDS = { 107566, 107567 };
+    public static final HashMap<Integer, CookieInfo> cookieInfoMap;
+    static {
+        cookieInfoMap = new HashMap<>();
+        cookieInfoMap.put(107566, new CookieInfo("Sword Kirby"));
+        cookieInfoMap.put(107567, new CookieInfo("Laser Kirby"));
+    }
+    private final CookieInfo cookieInfo;
     protected Rect[][] srcRectsArray;
     private void makeSourceRects() {
         srcRectsArray = new Rect[][]{
@@ -52,7 +67,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.goBack
                 makeRects(100, 101, 102, 103, 104, 105, 106, 107), // State.running
                 makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
-                makeRects(300, 301, 300),              // State.throwing
+                makeRects(300, 301, 302, 303),              // State.throwing
                 makeRects(300, 301, 302, 303),              // State.attack
                 makeRects(207, 208),                  // State.falling
                 makeRects(304, 206, 305, 307, 307, 307, 307, 307, 307, 307, 307, 307, 308, 309),
@@ -85,6 +100,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         //super(R.mipmap.kurby, 15);
         super(0, 8);
         loadSheetFromAsset(cookieId);
+        cookieInfo = cookieInfoMap.get(cookieId);
         setAnimationResource(0, 8.0f);
         setPosition(1.0f, 2.0f, 1.0f, 2.0f);
         srcRects = srcRectsArray[state.ordinal()];
