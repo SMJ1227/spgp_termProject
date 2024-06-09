@@ -183,7 +183,7 @@ public class MainScene extends Scene {
         canvas.save();
         canvas.translate(12.0f, 8.7f); // 화염 게이지 위치 설정 (btn_attack_n 버튼 아래)
         float fireCoolTime = Player.fireCoolTime;
-        float fireInterval = Player.FIRE_INTERVAL;
+        float fireInterval = player.getFireInterval();
         if (fireCoolTime > 0) {
             fireGauge.draw(canvas, fireCoolTime/fireInterval);  // 화염 게이지 값을 직접 전달
         }

@@ -29,7 +29,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private float invincibilityTime = 2.0f;
     public static boolean isInvincibility = true;
     private static final float BULLET_OFFSET = 0f;
-    public static float FIRE_INTERVAL = 10.0f;
+    //public static float FIRE_INTERVAL = 10.0f;
     public static float fireCoolTime = 0;
     private float  throwTime = 0.20f;
     public static float ATTACK_INTERVAL = 5.0f;
@@ -37,6 +37,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private float  attackTime = 0.40f;
     private static final float SPEED = 3.0f;
     public static int bullets = 5;
+    public static final float MIN_FIRE_INTERVAL = 3.0f;
     private static float dx, dy, foot, floor;
     public enum State {
         walking, goBack, running, jump, throwing, attack, falling, hurt, COUNT
@@ -51,6 +52,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public static class CookieInfo {
         public int id;
         public String name;
+        public float fireInterval;
     }
     public static int[] COOKIE_IDS;
     public static HashMap<Integer, CookieInfo> cookieInfoMap;
@@ -76,6 +78,9 @@ public class Player extends SheetSprite implements IBoxCollidable {
                             break;
                         case "name":
                             ci.name = jr.nextString();
+                            break;
+                        case "fireInterval":
+                            ci.fireInterval = (float)jr.nextDouble();
                             break;
                     }
                 }
@@ -131,10 +136,10 @@ public class Player extends SheetSprite implements IBoxCollidable {
         return rects;
     }
     public Player(int cookieId) {
-        //super(R.mipmap.kurby, 15);
         super(0, 8);
         loadSheetFromAsset(cookieId);
         cookieInfo = cookieInfoMap.get(cookieId);
+        fireCoolTime = cookieInfo.fireInterval;
         setAnimationResource(0, 8.0f);
         setPosition(1.0f, 2.0f, 1.0f, 2.0f);
         srcRects = srcRectsArray[state.ordinal()];
@@ -375,7 +380,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         if(bullets <= 0) return;
         bullets--;
 
-        fireCoolTime = FIRE_INTERVAL;
+        fireCoolTime = cookieInfo.fireInterval;
 
         int score = scene.getScore();
         int power = 10 + score / 1000;
@@ -386,6 +391,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
     @Override
     public RectF getCollisionRect() {
         return collisionRect;
+    }
+    public float getFireInterval() {
+        return cookieInfo.fireInterval;
+    }
+    public void setFireInterval(float fireInterval) {
+        cookieInfo.fireInterval = fireInterval;
     }
 }
 

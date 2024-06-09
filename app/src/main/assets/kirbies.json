@@ -1,10 +1,12 @@
 [
   {
     "id": 107566,
-    "name": "Sword Kirby"
+    "name": "Sword Kirby",
+    "fireInterval": 10.0
   },
   {
     "id": 107567,
-    "name": "Laser Kirby"
+    "name": "Laser Kirby",
+    "fireInterval": 5.0
   }
 ]
