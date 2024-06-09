@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Player.load(this);
         setCookieIndex(0);
     }
     private void runGameActivity() {
@@ -57,9 +58,13 @@ public class MainActivity extends AppCompatActivity {
         runGameActivity();
     }
     public void onBtnPreviousCookie(View view) {
-        setCookieIndex(cookieIndex - 1);
+        int len = Player.COOKIE_IDS.length;
+        int nextIndex = (cookieIndex - 1 + len) % len;
+        setCookieIndex(nextIndex);
     }
     public void onBtnNextCookie(View view) {
-        setCookieIndex(cookieIndex + 1);
+        int len = Player.COOKIE_IDS.length;
+        int nextIndex = (cookieIndex + 1) % len;
+        setCookieIndex(nextIndex);
     }
 }

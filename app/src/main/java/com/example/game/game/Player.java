@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
+import android.util.JsonReader;
 import android.view.MotionEvent;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,19 +49,51 @@ public class Player extends SheetSprite implements IBoxCollidable {
     protected Obstacle obstacle;
     private int imageSize = 0;
     public static class CookieInfo {
+        public int id;
         public String name;
-        public CookieInfo(String name) {
-            this.name = name;
+    }
+    public static int[] COOKIE_IDS;
+    public static HashMap<Integer, CookieInfo> cookieInfoMap;
+    private final CookieInfo cookieInfo;
+    public static void load(Context context) {
+        if (cookieInfoMap != null) return;
+        ArrayList<Integer> idArrayList = new ArrayList<>();
+        AssetManager assets = context.getAssets();
+        try {
+            InputStream is = assets.open("kirbies.json");
+            InputStreamReader isr = new InputStreamReader(is);
+            JsonReader jr = new JsonReader(isr);
+            jr.beginArray();
+            cookieInfoMap = new HashMap<>();
+            while (jr.hasNext()) {
+                CookieInfo ci = new CookieInfo();
+                jr.beginObject();
+                while (jr.hasNext()) {
+                    String name = jr.nextName();
+                    switch (name) { // Java 에서는 String 으로 switch-case 가 가능하다
+                        case "id":
+                            ci.id = jr.nextInt();
+                            break;
+                        case "name":
+                            ci.name = jr.nextString();
+                            break;
+                    }
+                }
+                jr.endObject();
+                if (ci.id == 0) break;
+                cookieInfoMap.put(ci.id, ci);
+                idArrayList.add(ci.id);
+            }
+            jr.endArray();
+            jr.close();
+            COOKIE_IDS = new int[idArrayList.size()];
+            for (int i = 0; i < COOKIE_IDS.length; i++) {
+                COOKIE_IDS[i] = idArrayList.get(i);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-    public static final int[] COOKIE_IDS = { 107566, 107567 };
-    public static final HashMap<Integer, CookieInfo> cookieInfoMap;
-    static {
-        cookieInfoMap = new HashMap<>();
-        cookieInfoMap.put(107566, new CookieInfo("Sword Kirby"));
-        cookieInfoMap.put(107567, new CookieInfo("Laser Kirby"));
-    }
-    private final CookieInfo cookieInfo;
     protected Rect[][] srcRectsArray;
     private void makeSourceRects() {
         srcRectsArray = new Rect[][]{
