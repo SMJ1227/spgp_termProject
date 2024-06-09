@@ -1,19 +1,23 @@
 package com.example.game.game;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import com.example.game.R;
+import com.example.game.framework.activity.GameActivity;
 import com.example.game.framework.interfaces.IBoxCollidable;
 import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.objects.Button;
 import com.example.game.framework.objects.SheetSprite;
 import com.example.game.framework.scene.Scene;
-import com.example.game.framework.util.CollisionHelper;
 import com.example.game.framework.view.Metrics;
 
 public class Player extends SheetSprite implements IBoxCollidable {
@@ -40,16 +44,20 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private final RectF collisionRect = new RectF();
     protected State state = State.walking;
     protected Obstacle obstacle;
-    protected static Rect[][] srcRectsArray = {
-            makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.walking
-            makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.goBack
-            makeRects(100, 101, 102, 103, 104, 105, 106, 107), // State.running
-            makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
-            makeRects(300, 301, 300),              // State.throwing
-            makeRects(300, 301, 302, 303),              // State.attack
-            makeRects(207, 208),                  // State.falling
-            makeRects(304, 206, 305, 307, 307, 307, 307, 307, 307, 307, 307, 307, 308, 309),                   // State.hurt
-    };
+    private int imageSize = 0;
+    protected Rect[][] srcRectsArray;
+    private void makeSourceRects() {
+        srcRectsArray = new Rect[][]{
+                makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.walking
+                makeRects(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), // State.goBack
+                makeRects(100, 101, 102, 103, 104, 105, 106, 107), // State.running
+                makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208),    // State.jump
+                makeRects(300, 301, 300),              // State.throwing
+                makeRects(300, 301, 302, 303),              // State.attack
+                makeRects(207, 208),                  // State.falling
+                makeRects(304, 206, 305, 307, 307, 307, 307, 307, 307, 307, 307, 307, 308, 309),
+        };
+    }
     protected static float[][] edgeInsetRatios = {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.walking
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.goBack
@@ -60,21 +68,41 @@ public class Player extends SheetSprite implements IBoxCollidable {
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.falling
             { 0.2f, 0.5f, 0.0f, 0.0f }, // State.hurt
     };
-    protected static Rect[] makeRects(int... indices) {
+    protected Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
         for (int i = 0; i < indices.length; i++) {
             int idx = indices[i];
             int l = 32 + (idx % 100) * 100;
             int t = 50 + (idx / 100) * 100;
             rects[i] = new Rect(l, t, l + 36, t + 50);
+            /*int l = 2 + (idx % 100) * (imageSize + 2);
+            int t = 2 + (idx / 100) * (imageSize + 2);
+            rects[i] = new Rect(l, t, l + 36, t + 50);*/
         }
         return rects;
     }
-    public Player() {
-        super(R.mipmap.kurby, 15);
+    public Player(int cookieId) {
+        //super(R.mipmap.kurby, 15);
+        super(0, 8);
+        loadSheetFromAsset(cookieId);
+        setAnimationResource(0, 8.0f);
         setPosition(1.0f, 2.0f, 1.0f, 2.0f);
         srcRects = srcRectsArray[state.ordinal()];
         fixCollisionRect();
+    }
+    private void loadSheetFromAsset(int cookieId) {
+        AssetManager assets = GameActivity.activity.getAssets();
+        String filename = cookieId + "_sheet.png";
+        Log.d("Player", filename);
+        try {
+            InputStream is = assets.open(filename);
+            bitmap = BitmapFactory.decodeStream(is);
+            imageSize = (bitmap.getWidth() - 2) / 10 - 2;
+            Log.d("Player", "imageSize=" + imageSize);
+            makeSourceRects();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public void update(float elapsedSeconds) {

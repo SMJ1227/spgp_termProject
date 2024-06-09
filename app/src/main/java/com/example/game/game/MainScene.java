@@ -1,11 +1,14 @@
 package com.example.game.game;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.util.Log;
 import android.graphics.Canvas;
 
 import com.example.game.R;
+import com.example.game.framework.activity.GameActivity;
 import com.example.game.framework.objects.Score;
 import com.example.game.framework.objects.HorzScrollBackground;
 import com.example.game.framework.res.BitmapPool;
@@ -23,6 +26,7 @@ public class MainScene extends Scene {
         bg, platform, item, enemy, obstacle, bullet, swordEffect, player, ui, touch, gauge, controller, COUNT
     }
     private final Player player;
+    private int cookieId = 107566; // default ID
     Score score;
     Item item;
     public int getScore() {
@@ -33,12 +37,17 @@ public class MainScene extends Scene {
 
     protected boolean bgChanged = false;
     public MainScene() {
+        Intent intent = GameActivity.activity.getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            cookieId = extras.getInt(KEY_COOKIE_ID);
+        }
         initLayers(Layer.COUNT);
 
         add(Layer.bg, new HorzScrollBackground(R.mipmap.clouds, 0.5f));
         add(Layer.bg, new HorzScrollBackground(R.mipmap.bg, 1.5f));
 
-        this.player = new Player();
+        player = new Player(cookieId);
         add(Layer.player, player);
 
         add(Layer.controller, new EnemyGenerator());
