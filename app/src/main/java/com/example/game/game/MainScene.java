@@ -17,6 +17,7 @@ import com.example.game.framework.util.Gauge;
 
 public class MainScene extends Scene {
     private static final String TAG = MainScene.class.getSimpleName();
+    public static final String KEY_COOKIE_ID = "cookieId";
 
     public enum Layer {
         bg, platform, item, enemy, obstacle, bullet, swordEffect, player, ui, touch, gauge, controller, COUNT
