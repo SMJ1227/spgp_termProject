@@ -60,7 +60,7 @@ public class CollisionChecker implements IGameObject {
             }
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
                 if (gobj instanceof JellyItem && ((JellyItem) gobj).getIndex() == 61) {
-                    if(player.bullets++ >= 6 && player.getFireInterval() > Player.MIN_FIRE_INTERVAL){
+                    if(player.bullets >= 6 && player.getFireInterval() > Player.MIN_FIRE_INTERVAL){
                         Log.d(TAG, String.valueOf(player.getFireInterval()));
                         player.setFireInterval(player.getFireInterval() - 1f);
                     }

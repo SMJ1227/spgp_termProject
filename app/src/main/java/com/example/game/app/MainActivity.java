@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             String fileName = cookieId + "_icon.png";
             InputStream is = assets.open(fileName);
             Bitmap bmp = BitmapFactory.decodeStream(is);
-            binding.cookieImageView.setImageBitmap(bmp);
+            binding.KirbyImageView.setImageBitmap(bmp);
             Player.CookieInfo cookieInfo = Player.cookieInfoMap.get(cookieId);
             if (cookieInfo != null) {
                 binding.KirbyNameTextView.setText(cookieInfo.name);

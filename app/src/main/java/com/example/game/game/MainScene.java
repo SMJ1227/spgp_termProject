@@ -54,14 +54,15 @@ public class MainScene extends Scene {
         add(Layer.controller, new CollisionChecker(this, player));
         add(Layer.controller, new MapLoader(this));
 
-        add(Layer.touch, new Button(R.mipmap.btn_attack_n, 12.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
-            @Override
-            public boolean onTouch(Button.Action action) {
-                player.attack();
-                return true;
-            }
-        }));
-
+        if(Player.getCookieId() == 107566){
+            add(Layer.touch, new Button(R.mipmap.btn_attack_n, 12.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
+                @Override
+                public boolean onTouch(Button.Action action) {
+                    player.attack();
+                    return true;
+                }
+            }));
+        }
         add(Layer.touch, new Button(R.mipmap.btn_shoot_n, 12.5f, 8.5f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch(Button.Action action) {

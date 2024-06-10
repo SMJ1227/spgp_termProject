@@ -55,6 +55,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         public float fireInterval;
     }
     public static int[] COOKIE_IDS;
+    private static int cookieId;
     public static HashMap<Integer, CookieInfo> cookieInfoMap;
     private final CookieInfo cookieInfo;
     public static void load(Context context) {
@@ -137,6 +138,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     public Player(int cookieId) {
         super(0, 8);
+        this.cookieId = cookieId;
         loadSheetFromAsset(cookieId);
         cookieInfo = cookieInfoMap.get(cookieId);
         fireCoolTime = cookieInfo.fireInterval;
@@ -397,6 +399,9 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     public void setFireInterval(float fireInterval) {
         cookieInfo.fireInterval = fireInterval;
+    }
+    public static int getCookieId() {
+        return cookieId;
     }
 }
 
