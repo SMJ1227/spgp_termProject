@@ -2,11 +2,13 @@
   {
     "id": 107566,
     "name": "Sword Kirby",
-    "fireInterval": 10.0
+    "fireInterval": 10.0,
+    "life": 8
   },
   {
     "id": 107567,
     "name": "Laser Kirby",
-    "fireInterval": 5.0
+    "fireInterval": 5.0,
+    "life": 5
   }
 ]

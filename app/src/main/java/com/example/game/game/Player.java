@@ -48,9 +48,10 @@ public class Player extends SheetSprite implements IBoxCollidable {
     private final RectF collisionRect = new RectF();
     protected State state = State.walking;
     protected Obstacle obstacle;
+    protected Enemy enemy;
     private int imageSize = 0;
     public static class CookieInfo {
-        public int id;
+        public int id, life;
         public String name;
         public float fireInterval;
     }
@@ -82,6 +83,9 @@ public class Player extends SheetSprite implements IBoxCollidable {
                             break;
                         case "fireInterval":
                             ci.fireInterval = (float)jr.nextDouble();
+                            break;
+                        case "life":
+                            ci.life = jr.nextInt();
                             break;
                     }
                 }
@@ -335,7 +339,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
             dx = 0;
         }
     }
-    public void hurt(Obstacle obstacle) {
+    public void hurtByObstacle(Obstacle obstacle) {
         if (state == State.hurt) return;
         setState(State.hurt);
         invincibilityTime = INVINCIBILITY_DURATION;
@@ -399,6 +403,12 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     public void setFireInterval(float fireInterval) {
         cookieInfo.fireInterval = fireInterval;
+    }
+    public float getLife() {
+        return cookieInfo.life;
+    }
+    public void setLife(int life) {
+        cookieInfo.life = life;
     }
     public static int getCookieId() {
         return cookieId;
