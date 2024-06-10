@@ -58,7 +58,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public static int[] COOKIE_IDS;
     private static int cookieId;
     public static HashMap<Integer, CookieInfo> cookieInfoMap;
-    private final CookieInfo cookieInfo;
+    private static CookieInfo cookieInfo;
     public static void load(Context context) {
         if (cookieInfoMap != null) return;
         ArrayList<Integer> idArrayList = new ArrayList<>();
@@ -417,6 +417,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public static int getCookieId() {
         return cookieId;
     }
+    public static int getLife(){ return cookieInfo.life; }
 }
 
 

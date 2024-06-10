@@ -11,11 +11,11 @@ import com.example.game.framework.res.BitmapPool;
 public class Item implements IGameObject {
     private final Bitmap bitmap;
     private final float right, top, dstCharWidth, dstCharHeight;
-    private final int srcCharWidth, srcCharHeight;
+    private final int srcCharWidth, srcCharHeight, type;
     private final Rect srcRect = new Rect();
     private final RectF dstRect = new RectF();
 
-    public Item(int mipmapId, float right, float top, float width) {
+    public Item(int mipmapId, float right, float top, float width, int type) {
         this.bitmap = BitmapPool.get(mipmapId);
         this.right = right;
         this.top = top;
@@ -23,17 +23,28 @@ public class Item implements IGameObject {
         this.srcCharWidth = bitmap.getWidth();
         this.srcCharHeight = bitmap.getHeight();
         this.dstCharHeight = dstCharWidth * srcCharHeight / srcCharWidth;
+        this.type = type;
     }
 
     @Override
     public void draw(Canvas canvas) {
         srcRect.set(0, 0, srcCharWidth, srcCharHeight); // 원본 비트맵의 전체 영역 설정
 
-        // 총알의 수만큼 반복하여 비트맵을 그립니다.
-        for (int i = 0; i < Player.bullets; i++) {
-            float x = right - dstCharWidth * (i + 1); // bullets 수만큼 x 좌표 설정
-            dstRect.set(x, top, x + dstCharWidth, top + dstCharHeight);
-            canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+        if(type == 0){
+            // 총알의 수만큼 반복하여 비트맵을 그립니다.
+            for (int i = 0; i < Player.bullets; i++) {
+                float x = right - dstCharWidth * (i + 1); // bullets 수만큼 x 좌표 설정
+                dstRect.set(x, top, x + dstCharWidth, top + dstCharHeight);
+                canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+            }
+        }
+        else if(type == 1){
+            // 체력의 수만큼 반복하여 비트맵을 그립니다.
+            for (int i = 0; i < Player.getLife(); i++) {
+                float x = right + dstCharWidth * (i + 1); // bullets 수만큼 x 좌표 설정
+                dstRect.set(x, top, x + dstCharWidth, top + dstCharHeight);
+                canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+            }
         }
     }
 

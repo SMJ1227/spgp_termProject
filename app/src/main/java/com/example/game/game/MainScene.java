@@ -108,8 +108,8 @@ public class MainScene extends Scene {
         this.score = new Score(R.mipmap.number_24x32, 8.5f, 0.5f, 0.6f);
         score.setScore(0);
         add(Layer.ui, score);
-        this.item = new Item(R.mipmap.throw_sword, 13.8f, 7.0f, 0.6f);
-        add(Layer.item, item);
+        add(Layer.item, new Item(R.mipmap.throw_sword, 13.8f, 7.0f, 0.6f, 0));
+        add(Layer.item, new Item(R.mipmap.heart, 0.1f, 0.3f, 1.0f, 1));
     }
 
     protected void onStart() {
