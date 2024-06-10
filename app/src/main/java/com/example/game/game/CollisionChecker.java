@@ -60,14 +60,24 @@ public class CollisionChecker implements IGameObject {
             }
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
                 if (gobj instanceof JellyItem && ((JellyItem) gobj).getIndex() == 61) {
-                    if(player.bullets >= 6 && player.getFireInterval() > Player.MIN_FIRE_INTERVAL){
-                        Log.d(TAG, String.valueOf(player.getFireInterval()));
-                        player.setFireInterval(player.getFireInterval() - 1f);
+                    if(Player.getCookieId() == 107566){
+                        if(player.bullets >= 6 && player.getFireInterval() > Player.MIN_FIRE_INTERVAL){
+                            Log.d(TAG, String.valueOf(player.getFireInterval()));
+                            player.setFireInterval(player.getFireInterval() - 1f);
+                        }
+                        else if(player.bullets < 6){
+                            player.bullets++;
+                        }
                     }
-                    else if(player.bullets < 6){
-                        player.bullets++;
+                    else if(Player.getCookieId() == 107567){
+                        if(player.bullets >= 6 && player.getFireInterval() > Player.MIN_FIRE_INTERVAL){
+                            Log.d(TAG, String.valueOf(player.getFireInterval()));
+                            player.setFireInterval(player.getFireInterval() - 1f);
+                        }
+                        else if(player.bullets < 6){
+                            player.bullets = 6;
+                        }
                     }
-
                 }
                 else if (gobj instanceof JellyItem && ((JellyItem) gobj).getIndex() == 62){
                     if(player.ATTACK_INTERVAL > 1.0f){

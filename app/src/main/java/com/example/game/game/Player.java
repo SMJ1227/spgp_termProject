@@ -36,7 +36,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public static float attackCoolTime = 0;
     private float  attackTime = 0.40f;
     private static final float SPEED = 3.0f;
-    public static int bullets = 5;
+    public static int bullets = 6;
     public static final float MIN_FIRE_INTERVAL = 3.0f;
     private static float dx, dy, foot, floor;
     public enum State {
@@ -413,12 +413,6 @@ public class Player extends SheetSprite implements IBoxCollidable {
     }
     public void setFireInterval(float fireInterval) {
         cookieInfo.fireInterval = fireInterval;
-    }
-    public float getLife() {
-        return cookieInfo.life;
-    }
-    public void setLife(int life) {
-        cookieInfo.life = life;
     }
     public static int getCookieId() {
         return cookieId;
