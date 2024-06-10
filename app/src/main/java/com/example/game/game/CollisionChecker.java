@@ -80,9 +80,14 @@ public class CollisionChecker implements IGameObject {
                     }
                 }
                 else if (gobj instanceof JellyItem && ((JellyItem) gobj).getIndex() == 62){
-                    if(player.ATTACK_INTERVAL > 1.0f){
-                        Log.d(TAG, String.valueOf(player.ATTACK_INTERVAL));
-                        player.ATTACK_INTERVAL -= 0.5f;
+                    if(Player.getCookieId() == 107566) {
+                        if(player.ATTACK_INTERVAL > 1.0f){
+                            Log.d(TAG, String.valueOf(player.ATTACK_INTERVAL));
+                            player.ATTACK_INTERVAL -= 0.5f;
+                        }
+                    }
+                    else if(Player.getCookieId() == 107567 && player.getFireInterval() > Player.MIN_FIRE_INTERVAL) {
+                        player.setFireInterval(player.getFireInterval() - 1f);
                     }
                 }
                 scene.remove(MainScene.Layer.item, gobj);
