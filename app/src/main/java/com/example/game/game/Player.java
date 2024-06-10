@@ -346,6 +346,16 @@ public class Player extends SheetSprite implements IBoxCollidable {
         isInvincibility = true;
         fixCollisionRect();
         this.obstacle = obstacle;
+        cookieInfo.life--;
+    }
+    public void hurtByEnemy(Enemy enemy) {
+        if (state == State.hurt) return;
+        setState(State.hurt);
+        invincibilityTime = INVINCIBILITY_DURATION;
+        isInvincibility = true;
+        fixCollisionRect();
+        this.enemy = enemy;
+        cookieInfo.life--;
     }
     public void goBack(Button.Action action) {
         if (state == State.hurt) return;

@@ -85,8 +85,15 @@ public class CollisionChecker implements IGameObject {
             for (int i = obstacles.size() - 1; i >= 0; i--) {
                 Obstacle obstacle = (Obstacle) obstacles.get(i);
                 if (CollisionHelper.collides(player, obstacle)) {
-                    player.hurt(obstacle);
+                    player.hurtByObstacle(obstacle);
                 }
+            }
+        }
+        // player Enemy 충돌체크
+        for (int e = enemies.size() - 1; e >= 0; e--) {
+            Enemy enemy = (Enemy) enemies.get(e);
+            if (CollisionHelper.collides(player, enemy)) {
+                player.hurtByEnemy(enemy);
             }
         }
     }
