@@ -134,6 +134,9 @@ public class MainScene extends Scene {
     }
     public void addScore(int amount) {
         score.add(amount);
+        if(score.getScore() % 3000 == 0){
+            Player.setLife(Player.getLife() + 1);
+        }
     }
     @Override
     public void update(float elapsedSeconds) {

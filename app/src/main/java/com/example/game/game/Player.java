@@ -424,6 +424,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
         return cookieId;
     }
     public static int getLife(){ return cookieInfo.life; }
+    public static void setLife(int life) { cookieInfo.life = life; }
 }
 
 
