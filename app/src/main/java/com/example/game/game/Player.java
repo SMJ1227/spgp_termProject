@@ -347,6 +347,9 @@ public class Player extends SheetSprite implements IBoxCollidable {
         fixCollisionRect();
         this.obstacle = obstacle;
         cookieInfo.life--;
+        if(cookieInfo.life <= 0){
+            new EndingScene().push();
+        }
     }
     public void hurtByEnemy(Enemy enemy) {
         if (state == State.hurt) return;
@@ -356,6 +359,9 @@ public class Player extends SheetSprite implements IBoxCollidable {
         fixCollisionRect();
         this.enemy = enemy;
         cookieInfo.life--;
+        if(cookieInfo.life <= 0){
+            new EndingScene().push();
+        }
     }
     public void goBack(Button.Action action) {
         if (state == State.hurt) return;
