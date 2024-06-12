@@ -17,6 +17,7 @@ import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.objects.Button;
 import com.example.game.framework.objects.Sprite;
 import com.example.game.framework.util.Gauge;
+import com.example.game.framework.res.Sound;
 
 public class MainScene extends Scene {
     private static final String TAG = MainScene.class.getSimpleName();
@@ -113,24 +114,27 @@ public class MainScene extends Scene {
     }
 
     protected void onStart() {
-        //Sound.playMusic(R.raw.main);
+        Sound.playMusic(R.raw.main);
     }
 
     @Override
     protected void onPause() {
-        //Sound.pauseMusic();
+        Sound.pauseMusic();
         pauseAnimations();
     }
 
     @Override
     protected void onResume() {
         resumeAnimations();
-        //Sound.resumeMusic();
+        Sound.resumeMusic();
+    }
+    @Override
+    protected void onEnd() {
+        Sound.stopMusic();
     }
     public void addScore(int amount) {
         score.add(amount);
     }
-
     @Override
     public void update(float elapsedSeconds) {
         super.update(elapsedSeconds);

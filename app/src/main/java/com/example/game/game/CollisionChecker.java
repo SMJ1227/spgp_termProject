@@ -5,9 +5,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import com.example.game.R;
 import com.example.game.framework.interfaces.IBoxCollidable;
 import com.example.game.framework.interfaces.IGameObject;
 import com.example.game.framework.util.CollisionHelper;
+import com.example.game.framework.res.Sound;
 
 public class CollisionChecker implements IGameObject {
     private static final String TAG = CollisionChecker.class.getSimpleName();
@@ -33,6 +35,7 @@ public class CollisionChecker implements IGameObject {
                     scene.remove(MainScene.Layer.bullet, bullet);
                     scene.remove(MainScene.Layer.enemy, enemy);
                     scene.addScore(enemy.getScore());
+                    Sound.playEffect(R.raw.attack);
                     break;
                 }
             }
@@ -47,6 +50,7 @@ public class CollisionChecker implements IGameObject {
                     Log.d(TAG, "Collision !!");
                     scene.remove(MainScene.Layer.enemy, enemy);
                     scene.addScore(enemy.getScore());
+                    Sound.playEffect(R.raw.attack);
                     break;
                 }
             }
@@ -60,6 +64,7 @@ public class CollisionChecker implements IGameObject {
             }
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
                 if (gobj instanceof JellyItem && ((JellyItem) gobj).getIndex() == 61) {
+                    Sound.playEffect(R.raw.item);
                     if(Player.getCookieId() == 107566){
                         if(player.bullets >= 6 && player.getFireInterval() > Player.MIN_FIRE_INTERVAL){
                             Log.d(TAG, String.valueOf(player.getFireInterval()));
@@ -80,6 +85,7 @@ public class CollisionChecker implements IGameObject {
                     }
                 }
                 else if (gobj instanceof JellyItem && ((JellyItem) gobj).getIndex() == 62){
+                    Sound.playEffect(R.raw.item);
                     if(Player.getCookieId() == 107566) {
                         if(player.ATTACK_INTERVAL > 1.0f){
                             Log.d(TAG, String.valueOf(player.ATTACK_INTERVAL));
@@ -90,8 +96,12 @@ public class CollisionChecker implements IGameObject {
                         player.setFireInterval(player.getFireInterval() - 1f);
                     }
                 }
+                else{
+                    Sound.playEffect(R.raw.jelly);
+                }
                 scene.remove(MainScene.Layer.item, gobj);
                 scene.addScore(JellyItem.getScore());
+                break;
             }
         }
         // player Obstacle 충돌체크
@@ -101,6 +111,8 @@ public class CollisionChecker implements IGameObject {
                 Obstacle obstacle = (Obstacle) obstacles.get(i);
                 if (CollisionHelper.collides(player, obstacle)) {
                     player.hurtByObstacle(obstacle);
+                    Sound.playEffect(R.raw.enemy_collision);
+                    break;
                 }
             }
         }
@@ -109,6 +121,8 @@ public class CollisionChecker implements IGameObject {
             Enemy enemy = (Enemy) enemies.get(e);
             if (CollisionHelper.collides(player, enemy)) {
                 player.hurtByEnemy(enemy);
+                Sound.playEffect(R.raw.enemy_collision);
+                break;
             }
         }
     }
